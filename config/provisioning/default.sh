@@ -13,11 +13,16 @@ PYTHON_PACKAGES=(
 NODES=(
     "https://github.com/ltdrdata/ComfyUI-Manager"
     "https://github.com/yolain/ComfyUI-Easy-Use"
+    "https://github.com/Fannovel16/comfyui_controlnet_aux"
+    "https://github.com/kijai/ComfyUI-Marigold"
+    "https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes"
+    "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
+    "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
 )
 
 CHECKPOINT_MODELS=(
    
-    "https://civitai.com/models/260460?modelVersionId=375981"
+    "https://civitai.com/api/download/models/375981"
 )
 
 LORA_MODELS=(
@@ -39,10 +44,10 @@ ESRGAN_MODELS=(
 
 CONTROLNET_MODELS=(
     "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
-    "https://huggingface.co/lllyasviel/sd_control_collection/blob/main/sai_xl_canny_256lora.safetensors"
-    "https://civitai.com/models/330313/ttplanetsdxlcontrolnettilerealisticv1"
-    "https://huggingface.co/h94/IP-Adapter/blob/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors"
-    "https://huggingface.co/openai/clip-vit-large-patch14"
+    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_canny_256lora.safetensors?download=true"
+    "https://civitai.com/api/download/models/444122"
+    "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors?download=true"
+    "https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors?download=true"
 )
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
