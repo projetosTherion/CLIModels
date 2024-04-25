@@ -16,14 +16,14 @@ NODES=(
 
 CHECKPOINT_MODELS=(
     "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
-    #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
-    #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
-    #"https://civitai.com/models/260460?modelVersionId=375981"
+    "https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
+    "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
+    "https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
+    "https://civitai.com/models/260460?modelVersionId=375981"
 )
 
 LORA_MODELS=(
-    #"https://civitai.com/api/download/models/16576"
+    "https://civitai.com/api/download/models/16576"
 )
 
 VAE_MODELS=(
@@ -57,12 +57,12 @@ CONTROLNET_MODELS=(
     #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_seg-fp16.safetensors"
     #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_sketch-fp16.safetensors"
     #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_style-fp16.safetensors"
-    #"https://civitai.com/models/330313?modelVersionId=444122"
-    #"https://github.com/cubiq/ComfyUI_IPAdapter_plus"
-    #"https://huggingface.co/lllyasviel/sd_control_collection/blob/main/sai_xl_canny_256lora.safetensors"
-    #"https://civitai.com/models/330313/ttplanetsdxlcontrolnettilerealisticv1"
-    #"https://huggingface.co/h94/IP-Adapter/blob/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors"
-    #"https://huggingface.co/openai/clip-vit-large-patch14"
+    "https://civitai.com/models/330313?modelVersionId=444122"
+    "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
+    "https://huggingface.co/lllyasviel/sd_control_collection/blob/main/sai_xl_canny_256lora.safetensors"
+    "https://civitai.com/models/330313/ttplanetsdxlcontrolnettilerealisticv1"
+    "https://huggingface.co/h94/IP-Adapter/blob/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors"
+    "https://huggingface.co/openai/clip-vit-large-patch14"
 )
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
