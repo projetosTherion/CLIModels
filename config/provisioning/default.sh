@@ -21,8 +21,9 @@ NODES=(
 )
 
 CHECKPOINT_MODELS=(
-   
+    "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     "https://civitai.com/api/download/models/375981"
+    
 )
 
 LORA_MODELS=(
