@@ -11,18 +11,18 @@ PYTHON_PACKAGES=(
 )
 
 NODES=(
-    "https://github.com/ltdrdata/ComfyUI-Manager"
-    "https://github.com/yolain/ComfyUI-Easy-Use"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
-    "https://github.com/kijai/ComfyUI-Marigold"
-    "https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes"
-    "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
-    "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
+    "https://github.com/projetosTherion/Models/tree/master/Gits/manager"
+    "https://github.com/projetosTherion/Models/tree/master/Gits/easy"
+    "https://github.com/projetosTherion/Models/tree/master/Gits/controlnetAux"
+    "https://github.com/projetosTherion/Models/tree/master/Gits/marigold"
+    "https://github.com/projetosTherion/Models/tree/master/Gits/Inferencenodes"
+    "https://github.com/projetosTherion/Models/tree/master/Gits/Ipadapterplus"
+    "https://github.com/projetosTherion/Models/tree/master/Gits/ultimateupscale"
 )
 
 CHECKPOINT_MODELS=(
     "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    "https://civitai.com/api/download/models/375981"
+    "https://drive.google.com/file/d/1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr/view?usp=sharing"
     
 )
 
@@ -46,7 +46,7 @@ ESRGAN_MODELS=(
 CONTROLNET_MODELS=(
     "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
     "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_canny_256lora.safetensors?download=true"
-    "https://civitai.com/api/download/models/444122"
+    "https://drive.google.com/file/d/1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6/view?usp=sharing"
     "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors?download=true"
     "https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors?download=true"
 )
