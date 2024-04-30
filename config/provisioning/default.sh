@@ -11,13 +11,13 @@ PYTHON_PACKAGES=(
 )
 
 NODES=(
-    "https://github.com/ltdrdata/ComfyUI-Manager/tree/7a664ca92faeeec47509039f4fa68ebf7cba48f4"
-    "https://github.com/yolain/ComfyUI-Easy-Use/tree/ad43f8e0bb4b8fff932b54ca5c8b4105232d539b"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux/tree/692a3d0f70d6be02d5509c5ebeac16081c6e05c8"
-    "https://github.com/kijai/ComfyUI-Marigold/tree/beb2c3b5cb5c6afd10970229c53efab2f1fdc172"
-    "https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes/tree/e94fb0a5fc78c363dd67ecb2ba8135a345033f45"
-    "https://github.com/cubiq/ComfyUI_IPAdapter_plus/tree/d7ff848ac87040a7917938f656c8b1738a2d486d"
-    "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111/tree/2322caa480535b1011a1f9c18126d85ea444f146"
+    "https://github.com/ltdrdata/ComfyUI-Manager"
+    "https://github.com/yolain/ComfyUI-Easy-Use"
+    "https://github.com/Fannovel16/comfyui_controlnet_aux"
+    "https://github.com/kijai/ComfyUI-Marigold"
+    "https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes"
+    "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
+    "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
 )
 
 CHECKPOINT_MODELS=(
