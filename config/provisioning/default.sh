@@ -11,18 +11,18 @@ PYTHON_PACKAGES=(
 )
 
 NODES=(
-    "https://github.com/projetosTherion/Models/tree/master/Gits/manager"
-    "https://github.com/projetosTherion/Models/tree/master/Gits/easy"
-    "https://github.com/projetosTherion/Models/tree/master/Gits/controlnetAux"
-    "https://github.com/projetosTherion/Models/tree/master/Gits/marigold"
-    "https://github.com/projetosTherion/Models/tree/master/Gits/Inferencenodes"
-    "https://github.com/projetosTherion/Models/tree/master/Gits/Ipadapterplus"
-    "https://github.com/projetosTherion/Models/tree/master/Gits/ultimateupscale"
+    "https://github.com/ltdrdata/ComfyUI-Manager/tree/7a664ca92faeeec47509039f4fa68ebf7cba48f4"
+    "https://github.com/yolain/ComfyUI-Easy-Use/tree/ad43f8e0bb4b8fff932b54ca5c8b4105232d539b"
+    "https://github.com/Fannovel16/comfyui_controlnet_aux/tree/692a3d0f70d6be02d5509c5ebeac16081c6e05c8"
+    "https://github.com/kijai/ComfyUI-Marigold/tree/beb2c3b5cb5c6afd10970229c53efab2f1fdc172"
+    "https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes/tree/e94fb0a5fc78c363dd67ecb2ba8135a345033f45"
+    "https://github.com/cubiq/ComfyUI_IPAdapter_plus/tree/d7ff848ac87040a7917938f656c8b1738a2d486d"
+    "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111/tree/2322caa480535b1011a1f9c18126d85ea444f146"
 )
 
 CHECKPOINT_MODELS=(
     "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    "https://drive.google.com/file/d/1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr/view?usp=sharing"
+    "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"
     
 )
 
@@ -46,7 +46,7 @@ ESRGAN_MODELS=(
 CONTROLNET_MODELS=(
     "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
     "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_canny_256lora.safetensors?download=true"
-    "https://drive.google.com/file/d/1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6/view?usp=sharing"
+    "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
     "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors?download=true"
     "https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors?download=true"
 )
