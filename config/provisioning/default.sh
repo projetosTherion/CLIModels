@@ -16,7 +16,6 @@ NODES=(
     "https://github.com/Fannovel16/comfyui_controlnet_aux"
     "https://github.com/kijai/ComfyUI-Marigold"
     "https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes"
-    "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
     "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
 )
 
