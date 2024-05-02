@@ -138,13 +138,26 @@ function provisioning_print_end() {
     printf "\nProvisioning complete:  Web UI will start now\n\n"
 }
 
-# Download from $1 URL to $2 file path
 function provisioning_download() {
-    wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
-    wget --no-check-certificate 'https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr' -O checkmodel
-    wget --no-check-certificate 'https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6' -O upscaleadd
+    local url=$1
+    local dir=$2
+    local file_id
+    local confirmation_code
+    local cookie_file="cookie.txt"
 
+    if [[ "$url" =~ "drive.google.com" ]]; then
+        file_id=$(echo $url | grep -o 'id=[^&]*' | cut -d= -f2)
+        # Primeira chamada para obter o código de confirmação
+        wget --quiet --save-cookies $cookie_file --keep-session-cookies --no-check-certificate "https://drive.google.com/uc?export=download&id=${file_id}" -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p' > confirmation_code.txt
 
+        confirmation_code=$(cat confirmation_code.txt)
+        # Segunda chamada para fazer o download real do arquivo
+        wget --load-cookies $cookie_file --no-check-certificate "https://drive.google.com/uc?export=download&confirm=${confirmation_code}&id=${file_id}" -O $dir
+        rm $cookie_file confirmation_code.txt
+    else
+        wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$dir" "$url"
+    fi
 }
+
 
 provisioning_start
