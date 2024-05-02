@@ -22,7 +22,7 @@ NODES=(
 
 CHECKPOINT_MODELS=(
     "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"
+    "https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors?download=true"
     
 )
 
@@ -46,7 +46,7 @@ ESRGAN_MODELS=(
 CONTROLNET_MODELS=(
     "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
     "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_canny_256lora.safetensors?download=true"
-    "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
+    "https://huggingface.co/TTPlanet/TTPLanet_SDXL_Controlnet_Tile_Realistic/resolve/main/TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors?download=true"
     "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors?download=true"
     "https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors?download=true"
 )
@@ -138,25 +138,9 @@ function provisioning_print_end() {
     printf "\nProvisioning complete:  Web UI will start now\n\n"
 }
 
+# Download from $1 URL to $2 file path
 function provisioning_download() {
-    local url=$1
-    local dir=$2
-    local file_id
-    local confirmation_code
-    local cookie_file="cookie.txt"
-
-    if [[ "$url" =~ "drive.google.com" ]]; then
-        file_id=$(echo $url | grep -o 'id=[^&]*' | cut -d= -f2)
-        # Primeira chamada para obter o código de confirmação
-        wget --quiet --save-cookies $cookie_file --keep-session-cookies --no-check-certificate "https://drive.google.com/uc?export=download&id=${file_id}" -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p' > confirmation_code.txt
-
-        confirmation_code=$(cat confirmation_code.txt)
-        # Segunda chamada para fazer o download real do arquivo
-        wget --load-cookies $cookie_file --no-check-certificate "https://drive.google.com/uc?export=download&confirm=${confirmation_code}&id=${file_id}" -O $dir
-        rm $cookie_file confirmation_code.txt
-    else
-        wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$dir" "$url"
-    fi
+    wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
 }
 
 
