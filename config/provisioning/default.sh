@@ -11,12 +11,11 @@ PYTHON_PACKAGES=(
 )
 
 NODES=(
-    "https://github.com/ltdrdata/ComfyUI-Manager"
-    "https://github.com/yolain/ComfyUI-Easy-Use"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
-    "https://github.com/kijai/ComfyUI-Marigold"
-    "https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes"
-    "https://github.com/Coyote-A/ultimate-upscale-for-automatic1111"
+    "https://github.com/projetosTherion/TherionManager"
+    "https://github.com/projetosTherion/TherionEasy"
+    "https://github.com/projetosTherion/TherionControl"
+    "https://github.com/projetosTherion/TherionMariGold"
+    "https://github.com/projetosTherion/TherionIPAdapter"
 )
 
 CHECKPOINT_MODELS=(
@@ -43,7 +42,6 @@ ESRGAN_MODELS=(
 )
 
 CONTROLNET_MODELS=(
-    "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
     "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_canny_256lora.safetensors?download=true"
     "https://huggingface.co/TTPlanet/TTPLanet_SDXL_Controlnet_Tile_Realistic/resolve/main/TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors?download=true"
     "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors?download=true"
