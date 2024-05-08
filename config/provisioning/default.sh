@@ -140,12 +140,17 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
+    # Verifica se o URL é do Google Drive
     if [[ $1 == *"drive.google.com"* ]]; then
-        gdown -q --id $(echo $1 | grep -o 'd/.\+/view' | cut -d'/' -f2) -O "$2/$(basename $1)"
+        # Extrai o ID do arquivo diretamente do parâmetro 'id='
+        local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
+        gdown -q --id "$file_id" -O "$2/$(basename $file_id)"
     else
+        # Manipula outros URLs com wget
         wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
     fi
 }
+
 
 
 
