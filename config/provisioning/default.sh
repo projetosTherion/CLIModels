@@ -63,23 +63,30 @@ function provisioning_get_nodes() {
         dir="${repo##*/}"
         path="/opt/ComfyUI/custom_nodes/${dir}"
         requirements="${path}/requirements.txt"
+        echo "Processing node: $repo"
         if [[ -d $path ]]; then
-            if [[ ${AUTO_UPDATE,,} != "false" ]]; then
-                printf "Updating node: %s...\n" "${repo}"
-                ( cd "$path" && git pull )
+            echo "Directory exists: $path"
+            if [[ ${AUTO_UPDATE,,} == "true" ]]; then
+                echo "Auto-update is enabled. Updating $repo..."
+                (cd "$path" && git pull)
                 if [[ -e $requirements ]]; then
+                    echo "Installing requirements from $requirements"
                     micromamba -n comfyui run pip install -r "$requirements"
                 fi
+            else
+                echo "Auto-update is disabled."
             fi
         else
-            printf "Downloading node: %s...\n" "${repo}"
+            echo "Directory does not exist. Cloning $repo into $path..."
             git clone "${repo}" "${path}" --recursive
             if [[ -e $requirements ]]; then
-                micromamba -n comfyui run pip install -r "${requirements}"
+                echo "Installing requirements from $requirements"
+                micromamba -n comfyui run pip install -r "$requirements"
             fi
         fi
     done
 }
+
 
 function provisioning_install_python_packages() {
     # Instala ou atualiza o gdown
