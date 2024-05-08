@@ -103,23 +103,24 @@ function provisioning_install_python_packages() {
 
 
 
-function provisioning_get_models() {
-    if [[ -z $2 ]]; then return 1; fi
-    dir="$1"
-    mkdir -p "$dir"
-    shift
-    if [[ $DISK_GB_ALLOCATED -ge $DISK_GB_REQUIRED ]]; then
-        arr=("$@")
-    else
-        printf "WARNING: Low disk space allocation - Only the first model will be downloaded!\n"
-        arr=("$1")
-    fi
-    
-    printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
-    for url in "${arr[@]}"; do
-        printf "Downloading: %s\n" "${url}"
-        provisioning_download "${url}" "${dir}"
-        printf "\n"
+function provisioning_get_nodes() {
+    for repo in "${NODES[@]}"; do
+        dir="${repo##*/}"
+        path="/opt/ComfyUI/custom_nodes/${dir}"
+        requirements="${path}/requirements.txt"
+        if [[ -d $path ]]; then
+            if [[ ${AUTO_UPDATE,,} == "true" ]]; then
+                (cd "$path" && git pull > "$path/update.log" 2>&1)
+                if [[ -e $requirements ]]; then
+                    micromamba -n comfyui run pip install -r "$requirements" > "$path/requirements_install.log" 2>&1
+                fi
+            fi
+        else
+            git clone "${repo}" "${path}" --recursive > "$path/clone.log" 2>&1
+            if [[ -e $requirements ]]; then
+                micromamba -n comfyui run pip install -r "$requirements" > "$path/requirements_install.log" 2>&1
+            fi
+        fi
     done
 }
 
@@ -139,9 +140,9 @@ function provisioning_download() {
 
     if [[ $1 == *"drive.google.com"* ]]; then
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$2/$(basename $file_id)"
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$2/$(basename $file_id)" > "$2/gdown_${file_id}.log" 2>&1
     else
-        wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
+        wget -nv -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1" > "$2/wget_$(basename $1).log" 2>&1
     fi
 }
 
