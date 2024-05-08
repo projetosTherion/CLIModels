@@ -58,30 +58,24 @@ function provisioning_start() {
     provisioning_print_end
 }
 
-function provisioning_get_nodes() {
+function build_extra_get_nodes() {
     for repo in "${NODES[@]}"; do
         dir="${repo##*/}"
         path="/opt/ComfyUI/custom_nodes/${dir}"
         requirements="${path}/requirements.txt"
-        echo "Processing node: $repo"
         if [[ -d $path ]]; then
-            echo "Directory exists: $path"
-            if [[ ${AUTO_UPDATE,,} == "true" ]]; then
-                echo "Auto-update is enabled. Updating $repo..."
-                (cd "$path" && git pull)
+            if [[ ${AUTO_UPDATE,,} != "false" ]]; then
+                printf "Updating node: %s...\n" "${repo}"
+                ( cd "$path" && git pull )
                 if [[ -e $requirements ]]; then
-                    echo "Installing requirements from $requirements"
-                    micromamba -n comfyui run pip install -r "$requirements"
+                    micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
                 fi
-            else
-                echo "Auto-update is disabled."
             fi
         else
-            echo "Directory does not exist. Cloning $repo into $path..."
+            printf "Downloading node: %s...\n" "${repo}"
             git clone "${repo}" "${path}" --recursive
             if [[ -e $requirements ]]; then
-                echo "Installing requirements from $requirements"
-                micromamba -n comfyui run pip install -r "$requirements"
+                micromamba -n comfyui run ${PIP_INSTALL} -r "${requirements}"
             fi
         fi
     done
@@ -101,27 +95,20 @@ function provisioning_install_python_packages() {
     fi
 }
 
-
-
-function provisioning_get_nodes() {
-    for repo in "${NODES[@]}"; do
-        dir="${repo##*/}"
-        path="/opt/ComfyUI/custom_nodes/${dir}"
-        requirements="${path}/requirements.txt"
-        if [[ -d $path ]]; then
-            if [[ ${AUTO_UPDATE,,} == "true" ]]; then
-                (cd "$path" && git pull > "$path/update.log" 2>&1)
-                if [[ -e $requirements ]]; then
-                    micromamba -n comfyui run pip install -r "$requirements" > "$path/requirements_install.log" 2>&1
-                fi
-            fi
-        else
-            git clone "${repo}" "${path}" --recursive > "$path/clone.log" 2>&1
-            if [[ -e $requirements ]]; then
-                micromamba -n comfyui run pip install -r "$requirements" > "$path/requirements_install.log" 2>&1
-            fi
-        fi
-    done
+function build_extra_get_models() {
+    if [[ -n $2 ]]; then
+        dir="$1"
+        mkdir -p "$dir"
+        shift
+        arr=("$@")
+        
+        printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
+        for url in "${arr[@]}"; do
+            printf "Downloading: %s\n" "${url}"
+            build_extra_download "${url}" "${dir}"
+            printf "\n"
+        done
+    fi
 }
 
 function provisioning_print_header() {
