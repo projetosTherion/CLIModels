@@ -82,8 +82,8 @@ function provisioning_get_nodes() {
 }
 
 function provisioning_install_python_packages() {
-    # Instala o gdown
-    micromamba -n comfyui run pip install gdown
+    # Instala ou atualiza o gdown
+    micromamba -n comfyui run pip install gdown --upgrade
 
     # Imprime a versão do gdown para verificar se está instalado
     echo "Verificando a instalação do gdown..."
@@ -93,6 +93,7 @@ function provisioning_install_python_packages() {
         micromamba -n comfyui run pip install ${PYTHON_PACKAGES[*]}
     fi
 }
+
 
 
 function provisioning_get_models() {
@@ -131,11 +132,12 @@ function provisioning_download() {
 
     if [[ $1 == *"drive.google.com"* ]]; then
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-        $gdown_path -q --id "$file_id" -O "$2/$(basename $file_id)"
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$2/$(basename $file_id)"
     else
         wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
     fi
 }
+
 
 
 provisioning_start
