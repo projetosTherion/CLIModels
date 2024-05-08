@@ -1,56 +1,47 @@
 #!/bin/bash
 
-# This file will be sourced in init.sh
-
-# https://raw.githubusercontent.com/ai-dock/comfyui/main/config/provisioning/default.sh
-
-# Packages are installed after nodes so we can fix them...
+# Este arquivo será chamado em init.sh
 
 PYTHON_PACKAGES=(
-    #"opencv-python==4.7.0.72"
+    # "opencv-python==4.7.0.72"
 )
 
 NODES=(
-    "https://github.com/projetosTherion/TherionManager"
-    "https://github.com/projetosTherion/TherionEasy"
-    "https://github.com/projetosTherion/TherionControl"
-    "https://github.com/projetosTherion/TherionMariGold"
+    "https://github.com/projetosTherion/TherionManager",
+    "https://github.com/projetosTherion/TherionEasy",
+    "https://github.com/projetosTherion/TherionControl",
+    "https://github.com/projetosTherion/TherionMariGold",
     "https://github.com/projetosTherion/TherionIPAdapter"
 )
 
 CHECKPOINT_MODELS=(
-    "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
+    "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt",
     "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"
-    #"https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors?download=true"
-    
 )
 
 LORA_MODELS=(
-    #"https://civitai.com/api/download/models/16576"
+    # "https://civitai.com/api/download/models/16576"
 )
 
 VAE_MODELS=(
-   "https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
-    "https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors"
+   "https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors",
+    "https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors",
     "https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors"
 )
 
 ESRGAN_MODELS=(
-    "https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
-    "https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth"
-    "https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth"
+    "https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth",
+    "https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth",
+    "https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth",
     "https://huggingface.co/lokCX/4x-Ultrasharp/blob/main/4x-UltraSharp.pth"
 )
 
 CONTROLNET_MODELS=(
-    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_canny_256lora.safetensors?download=true"
-    "https://huggingface.co/TTPlanet/TTPLanet_SDXL_Controlnet_Tile_Realistic/resolve/main/TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors?download=true"
-    "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors?download=true"
-    #"https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors?download=true"
+    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_canny_256lora.safetensors?download=true",
+    "https://huggingface.co/TTPlanet/TTPLanet_SDXL_Controlnet_Tile_Realistic/resolve/main/TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors?download=true",
+    "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors?download=true",
     "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
 )
-
-### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
 function provisioning_start() {
     DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
@@ -59,21 +50,11 @@ function provisioning_start() {
     provisioning_print_header
     provisioning_get_nodes
     provisioning_install_python_packages
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/ckpt" \
-        "${CHECKPOINT_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/lora" \
-        "${LORA_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/controlnet" \
-        "${CONTROLNET_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/vae" \
-        "${VAE_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
-        "${ESRGAN_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ckpt" "${CHECKPOINT_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/lora" "${LORA_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/controlnet" "${CONTROLNET_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/vae" "${VAE_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/esrgan" "${ESRGAN_MODELS[@]}"
     provisioning_print_end
 }
 
@@ -87,23 +68,23 @@ function provisioning_get_nodes() {
                 printf "Updating node: %s...\n" "${repo}"
                 ( cd "$path" && git pull )
                 if [[ -e $requirements ]]; then
-                    micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
+                    micromamba -n comfyui run pip install -r "$requirements"
                 fi
             fi
         else
             printf "Downloading node: %s...\n" "${repo}"
             git clone "${repo}" "${path}" --recursive
             if [[ -e $requirements ]]; then
-                micromamba -n comfyui run ${PIP_INSTALL} -r "${requirements}"
+                micromamba -n comfyui run pip install -r "${requirements}"
             fi
         fi
     done
 }
 
 function provisioning_install_python_packages() {
- micromamba -n comfyui run pip install gdown
+    micromamba -n comfyui run pip install gdown
     if [ ${#PYTHON_PACKAGES[@]} -gt 0 ]; then
-        micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
+        micromamba -n comfyui run pip install ${PYTHON_PACKAGES[*]}
     fi
 }
 
@@ -138,20 +119,13 @@ function provisioning_print_end() {
     printf "\nProvisioning complete:  Web UI will start now\n\n"
 }
 
-# Download from $1 URL to $2 file path
 function provisioning_download() {
-    # Verifica se o URL é do Google Drive
     if [[ $1 == *"drive.google.com"* ]]; then
-        # Extrai o ID do arquivo diretamente do parâmetro 'id='
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
         gdown -q --id "$file_id" -O "$2/$(basename $file_id)"
     else
-        # Manipula outros URLs com wget
         wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
     fi
 }
-
-
-
 
 provisioning_start
