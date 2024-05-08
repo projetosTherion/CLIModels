@@ -82,11 +82,18 @@ function provisioning_get_nodes() {
 }
 
 function provisioning_install_python_packages() {
+    # Instala o gdown
     micromamba -n comfyui run pip install gdown
+
+    # Imprime a versão do gdown para verificar se está instalado
+    echo "Verificando a instalação do gdown..."
+    $gdown_path --version  # Usando o caminho completo para evitar qualquer problema de PATH
+
     if [ ${#PYTHON_PACKAGES[@]} -gt 0 ]; then
         micromamba -n comfyui run pip install ${PYTHON_PACKAGES[*]}
     fi
 }
+
 
 function provisioning_get_models() {
     if [[ -z $2 ]]; then return 1; fi
@@ -120,12 +127,15 @@ function provisioning_print_end() {
 }
 
 function provisioning_download() {
+    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
+
     if [[ $1 == *"drive.google.com"* ]]; then
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-        gdown -q --id "$file_id" -O "$2/$(basename $file_id)"
+        $gdown_path -q --id "$file_id" -O "$2/$(basename $file_id)"
     else
         wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
     fi
 }
+
 
 provisioning_start
