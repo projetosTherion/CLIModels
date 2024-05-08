@@ -20,7 +20,8 @@ NODES=(
 
 CHECKPOINT_MODELS=(
     "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    "https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors?download=true"
+    "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"
+    #"https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors?download=true"
     
 )
 
@@ -45,7 +46,8 @@ CONTROLNET_MODELS=(
     "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_canny_256lora.safetensors?download=true"
     "https://huggingface.co/TTPlanet/TTPLanet_SDXL_Controlnet_Tile_Realistic/resolve/main/TTPLANET_Controlnet_Tile_realistic_v2_fp16.safetensors?download=true"
     "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors?download=true"
-    "https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors?download=true"
+    #"https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors?download=true"
+    "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
 )
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
@@ -99,6 +101,7 @@ function provisioning_get_nodes() {
 }
 
 function provisioning_install_python_packages() {
+ micromamba -n comfyui run pip install gdown
     if [ ${#PYTHON_PACKAGES[@]} -gt 0 ]; then
         micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
     fi
@@ -137,8 +140,13 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-    wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
+    if [[ $1 == *"drive.google.com"* ]]; then
+        gdown -q --id $(echo $1 | grep -o 'd/.\+/view' | cut -d'/' -f2) -O "$2/$(basename $1)"
+    else
+        wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
+    fi
 }
+
 
 
 provisioning_start
