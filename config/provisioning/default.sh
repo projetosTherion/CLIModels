@@ -124,12 +124,11 @@ function provisioning_print_end() {
 
 function provisioning_download() {
     local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
-
+    wget -nv -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1" > "$2/wget_$(basename $1).log" 2>&1
+    
     if [[ $1 == *"drive.google.com"* ]]; then
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$2/$(basename $file_id)" > "$2/gdown_${file_id}.log" 2>&1
-    else
-        wget -nv -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1" > "$2/wget_$(basename $1).log" 2>&1
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$2/$(basename $file_id)" > "$2/gdown_${file_id}.log" 2>&1 
     fi
 }
 
