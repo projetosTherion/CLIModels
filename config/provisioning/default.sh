@@ -43,6 +43,8 @@ CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
 )
 
+### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
+
 function provisioning_start() {
     DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
     DISK_GB_USED=$(($(df --output=used -m "${WORKSPACE}" | tail -n1) / 1000))
@@ -50,15 +52,25 @@ function provisioning_start() {
     provisioning_print_header
     provisioning_get_nodes
     provisioning_install_python_packages
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ckpt" "${CHECKPOINT_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/lora" "${LORA_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/controlnet" "${CONTROLNET_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/vae" "${VAE_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/esrgan" "${ESRGAN_MODELS[@]}"
+    provisioning_get_models \
+        "${WORKSPACE}/storage/stable_diffusion/models/ckpt" \
+        "${CHECKPOINT_MODELS[@]}"
+    provisioning_get_models \
+        "${WORKSPACE}/storage/stable_diffusion/models/lora" \
+        "${LORA_MODELS[@]}"
+    provisioning_get_models \
+        "${WORKSPACE}/storage/stable_diffusion/models/controlnet" \
+        "${CONTROLNET_MODELS[@]}"
+    provisioning_get_models \
+        "${WORKSPACE}/storage/stable_diffusion/models/vae" \
+        "${VAE_MODELS[@]}"
+    provisioning_get_models \
+        "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
+        "${ESRGAN_MODELS[@]}"
     provisioning_print_end
 }
 
-function build_extra_get_nodes() {
+function provisioning_get_nodes() {
     for repo in "${NODES[@]}"; do
         dir="${repo##*/}"
         path="/opt/ComfyUI/custom_nodes/${dir}"
@@ -81,34 +93,31 @@ function build_extra_get_nodes() {
     done
 }
 
-
 function provisioning_install_python_packages() {
-    # Instala ou atualiza o gdown
-    micromamba -n comfyui run pip install gdown --upgrade
-
-    # Imprime a versão do gdown para verificar se está instalado
-    echo "Verificando a instalação do gdown..."
-    $gdown_path --version  # Usando o caminho completo para evitar qualquer problema de PATH
-
+ micromamba -n comfyui run pip install gdown --upgrade
     if [ ${#PYTHON_PACKAGES[@]} -gt 0 ]; then
-        micromamba -n comfyui run pip install ${PYTHON_PACKAGES[*]}
+        micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
     fi
 }
 
-function build_extra_get_models() {
-    if [[ -n $2 ]]; then
-        dir="$1"
-        mkdir -p "$dir"
-        shift
+function provisioning_get_models() {
+    if [[ -z $2 ]]; then return 1; fi
+    dir="$1"
+    mkdir -p "$dir"
+    shift
+    if [[ $DISK_GB_ALLOCATED -ge $DISK_GB_REQUIRED ]]; then
         arr=("$@")
-        
-        printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
-        for url in "${arr[@]}"; do
-            printf "Downloading: %s\n" "${url}"
-            build_extra_download "${url}" "${dir}"
-            printf "\n"
-        done
+    else
+        printf "WARNING: Low disk space allocation - Only the first model will be downloaded!\n"
+        arr=("$1")
     fi
+    
+    printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
+    for url in "${arr[@]}"; do
+        printf "Downloading: %s\n" "${url}"
+        provisioning_download "${url}" "${dir}"
+        printf "\n"
+    done
 }
 
 function provisioning_print_header() {
@@ -122,16 +131,16 @@ function provisioning_print_end() {
     printf "\nProvisioning complete:  Web UI will start now\n\n"
 }
 
+# Download from $1 URL to $2 file path
 function provisioning_download() {
     local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
-    wget -nv -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1" > "$2/wget_$(basename $1).log" 2>&1
-    
+
     if [[ $1 == *"drive.google.com"* ]]; then
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$2/$(basename $file_id)" > "$2/gdown_${file_id}.log" 2>&1 
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$2/$(basename $file_id)" > "$2/gdown_${file_id}.log" 2>&1
+    else
+        wget -nv -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1" > "$2/wget_$(basename $1).log" 2>&1
     fi
 }
-
-
 
 provisioning_start
