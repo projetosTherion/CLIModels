@@ -132,15 +132,43 @@ function provisioning_print_end() {
 }
 
 # Download from $1 URL to $2 file path
+# Download from $1 URL to $2 file path
 function provisioning_download() {
     local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
 
     if [[ $1 == *"drive.google.com"* ]]; then
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$2/$(basename $file_id)"
+        
+        # Mapeamento de IDs para nomes de arquivos
+        declare -A file_map
+        file_map["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
+        file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="moxieDiffusionXL_v132.safetensors"
+
+        local file_name="${file_map[$file_id]}"
+        local file_path="$2/$file_name"
+
+        if [[ ! -d $2 ]]; then
+            echo "Diretório de destino $2 não existe. Criando diretório..."
+            mkdir -p "$2"
+        fi
+
+        echo "Downloading $file_name from Google Drive to $file_path"
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path"
+        echo "Download concluído: $file_path"
     else
+        local file_name=$(basename "$1")
+        local file_path="$2/$file_name"
+
+        if [[ ! -d $2 ]]; then
+            echo "Diretório de destino $2 não existe. Criando diretório..."
+            mkdir -p "$2"
+        fi
+
+        echo "Using wget to download $file_name to $file_path"
         wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
+        echo "Download concluído: $file_path"
     fi
 }
+
 
 provisioning_start
