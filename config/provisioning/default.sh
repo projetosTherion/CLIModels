@@ -136,7 +136,7 @@ function provisioning_download() {
         # Mapeamento de IDs para nomes de arquivos
         declare -A file_map
         file_map["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
-        file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="moxieDiffusionXL_v132.safetensors"
+        file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
 
         local file_name="${file_map[$file_id]}"
         local file_path="$2/$file_name"
