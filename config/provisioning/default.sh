@@ -12,6 +12,7 @@ NODES=(
     "https://github.com/projetosTherion/TherionControl"
     "https://github.com/projetosTherion/TherionMariGold"
     "https://github.com/projetosTherion/TherionIPAdapter"
+    "https://github.com/projetosTherion/TherionSaveImage"
 )
 
 CHECKPOINT_MODELS=(
