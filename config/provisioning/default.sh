@@ -37,7 +37,7 @@ ESRGAN_MODELS=(
 
 CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
-     "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
+    "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
     "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"
 )
 
