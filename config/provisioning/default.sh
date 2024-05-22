@@ -12,7 +12,9 @@ NODES=(
     "https://github.com/projetosTherion/TherionControl"
     "https://github.com/projetosTherion/TherionMariGold"
     "https://github.com/projetosTherion/TherionIPAdapter"
-    "https://github.com/projetosTherion/TherionSaveImage"
+    "https://github.com/projetosTherion/TherionSDUpscale"
+    "https://github.com/projetosTherion/TherionSaveImageReal"
+    "https://github.com/projetosTherion/TherionEssentials"
 )
 
 CHECKPOINT_MODELS=(
@@ -21,17 +23,16 @@ CHECKPOINT_MODELS=(
 )
 
 LORA_MODELS=(
-    # "https://civitai.com/api/download/models/16576"
+    "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
+    "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"
 )
 
 VAE_MODELS=(
    #"https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
-   
 )
 
 ESRGAN_MODELS=(
     #"https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
-   
 )
 
 CONTROLNET_MODELS=(
@@ -89,7 +90,7 @@ function provisioning_get_nodes() {
 }
 
 function provisioning_install_python_packages() {
- micromamba -n comfyui run pip install gdown --upgrade
+    micromamba -n comfyui run pip install gdown --upgrade
     if [ ${#PYTHON_PACKAGES[@]} -gt 0 ]; then
         micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
     fi
@@ -123,10 +124,9 @@ function provisioning_print_header() {
 }
 
 function provisioning_print_end() {
-    printf "\nProvisioning complete:  Web UI will start now\n\n"
+    printf "\nProvisioning complete: Web UI will start now\n\n"
 }
 
-# Download from $1 URL to $2 file path
 # Download from $1 URL to $2 file path
 function provisioning_download() {
     local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
@@ -138,6 +138,8 @@ function provisioning_download() {
         declare -A file_map
         file_map["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
         file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
+        file_map["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
+        file_map["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
 
         local file_name="${file_map[$file_id]}"
         local file_path="$2/$file_name"
@@ -164,6 +166,5 @@ function provisioning_download() {
         echo "Download concluído: $file_path"
     fi
 }
-
 
 provisioning_start
