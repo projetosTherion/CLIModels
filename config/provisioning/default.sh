@@ -32,7 +32,7 @@ VAE_MODELS=(
 )
 
 ESRGAN_MODELS=(
-    #"https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
+    "https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
 )
 
 CONTROLNET_MODELS=(
@@ -142,6 +142,7 @@ function provisioning_download() {
         file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
         file_map["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
         file_map["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
+        file_map["1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"]="4x-UltraSharp.pth"
 
         local file_name="${file_map[$file_id]}"
         local file_path="$2/$file_name"
