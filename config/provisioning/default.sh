@@ -32,6 +32,7 @@ VAE_MODELS=(
 )
 
 ESRGAN_MODELS=(
+    #"https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
     "https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
 )
 
@@ -66,6 +67,8 @@ function provisioning_start() {
         "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
         "${ESRGAN_MODELS[@]}"
     provisioning_print_end
+    copy_script_to_comfy
+    start_comfy_and_run_script
 }
 
 function provisioning_get_nodes() {
@@ -168,6 +171,19 @@ function provisioning_download() {
         wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
         echo "Download concluído: $file_path"
     fi
+}
+
+function copy_script_to_comfy() {
+    echo "Copying script to ComfyUI..."
+    cp C:\Users\windows\Desktop\Madu\start.json /opt/ComfyUI/scripts/script.json
+}
+
+function start_comfy_and_run_script() {
+    echo "Starting ComfyUI and running script..."
+    cd /opt/ComfyUI
+    python main.py &
+    sleep 10
+    curl -X POST http://localhost:8188/api/run -d @/opt/ComfyUI/scripts/script.json -H "Content-Type: application/json"
 }
 
 provisioning_start
