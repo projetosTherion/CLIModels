@@ -42,6 +42,9 @@ CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"
 )
 
+# URL do arquivo JSON no Google Drive
+SCRIPT_JSON_URL="https://drive.google.com/uc?id=1d0qOyMw0GxuXmVwM3DQFGvcSN89yOYk9"
+
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
 function provisioning_start() {
@@ -67,7 +70,7 @@ function provisioning_start() {
         "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
         "${ESRGAN_MODELS[@]}"
     provisioning_print_end
-    copy_script_to_comfy
+    download_script_from_google_drive
     start_comfy_and_run_script
 }
 
@@ -134,7 +137,7 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
+        local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
 
     if [[ $1 == *"drive.google.com"* ]]; then
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
@@ -173,9 +176,12 @@ function provisioning_download() {
     fi
 }
 
-function copy_script_to_comfy() {
-    echo "Copying script to ComfyUI..."
-    cp C:\Users\windows\Desktop\Madu\start.json /opt/ComfyUI/scripts/script.json
+function download_script_from_google_drive() {
+    local script_name="start.json"
+    local script_path="/opt/ComfyUI/scripts/${script_name}"
+
+    echo "Downloading $script_name from Google Drive to $script_path"
+    provisioning_download "$SCRIPT_JSON_URL" "/opt/ComfyUI/scripts"
 }
 
 function start_comfy_and_run_script() {
@@ -187,3 +193,4 @@ function start_comfy_and_run_script() {
 }
 
 provisioning_start
+
