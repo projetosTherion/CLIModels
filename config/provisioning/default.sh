@@ -32,7 +32,6 @@ VAE_MODELS=(
 )
 
 ESRGAN_MODELS=(
-    #"https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
     "https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
 )
 
@@ -41,9 +40,6 @@ CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
     "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"
 )
-
-# URL do arquivo JSON no Google Drive
-SCRIPT_JSON_URL="https://drive.google.com/uc?id=1d0qOyMw0GxuXmVwM3DQFGvcSN89yOYk9"
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -70,8 +66,6 @@ function provisioning_start() {
         "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
         "${ESRGAN_MODELS[@]}"
     provisioning_print_end
-    download_script_from_google_drive
-    start_comfy_and_run_script
 }
 
 function provisioning_get_nodes() {
@@ -137,7 +131,7 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-        local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
+    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
 
     if [[ $1 == *"drive.google.com"* ]]; then
         local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
@@ -176,21 +170,4 @@ function provisioning_download() {
     fi
 }
 
-function download_script_from_google_drive() {
-    local script_name="start.json"
-    local script_path="/opt/ComfyUI/scripts/${script_name}"
-
-    echo "Downloading $script_name from Google Drive to $script_path"
-    provisioning_download "$SCRIPT_JSON_URL" "/opt/ComfyUI/scripts"
-}
-
-function start_comfy_and_run_script() {
-    echo "Starting ComfyUI and running script..."
-    cd /opt/ComfyUI
-    python main.py &
-    sleep 10
-    curl -X POST http://localhost:8188/api/run -d @/opt/ComfyUI/scripts/script.json -H "Content-Type: application/json"
-}
-
 provisioning_start
-
