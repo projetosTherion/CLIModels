@@ -15,6 +15,7 @@ NODES=(
     "https://github.com/projetosTherion/TherionSDUpscale"
     "https://github.com/projetosTherion/TherionSaveImageReal"
     "https://github.com/projetosTherion/TherionEssentials"
+    "https://github.com/projetosTherion/TherionInspire"
 )
 
 CHECKPOINT_MODELS=(
