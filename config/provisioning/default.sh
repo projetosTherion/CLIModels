@@ -16,7 +16,6 @@ NODES=(
     "https://github.com/projetosTherion/TherionSaveImageReal"
     "https://github.com/projetosTherion/TherionEssentials"
     "https://github.com/projetosTherion/TherionInspire"
-    
 )
 
 CHECKPOINT_MODELS=(
@@ -41,7 +40,11 @@ CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
     "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
     "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"
-   
+)
+
+IPADAPTER_MODELS=(
+    "https://drive.google.com/uc?id=1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"
+    "https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
 )
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
@@ -68,6 +71,10 @@ function provisioning_start() {
     provisioning_get_models \
         "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
         "${ESRGAN_MODELS[@]}"
+    provisioning_get_models \
+        "${WORKSPACE}/ComfyUI/models/ipadapter" \
+        "${IPADAPTER_MODELS[@]}"
+    provisioning_rename_ipadapter_models
     provisioning_print_end
 }
 
@@ -87,8 +94,21 @@ function provisioning_get_nodes() {
         else
             printf "Downloading node: %s...\n" "${repo}"
             git clone "${repo}" "${path}" --recursive
+            if [[ $? -ne 0 ]]; then
+                echo "Erro ao clonar o repositório: ${repo}"
+                continue
+            fi
             if [[ -e $requirements ]]; then
                 micromamba -n comfyui run ${PIP_INSTALL} -r "${requirements}"
+                if [[ $? -ne 0 ]]; then
+                    echo "Erro ao instalar os pacotes do ${requirements} do repositório: ${repo}"
+                fi
+            else
+                # Verifique as dependências manualmente
+                if [[ "${dir}" == "TherionIPAdapter" ]]; then
+                    echo "Instalando dependências manualmente para ${dir}"
+                    micromamba -n comfyui run pip install numpy opencv-python torch
+                fi
             fi
         fi
     done
@@ -146,6 +166,8 @@ function provisioning_download() {
         file_map["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
         file_map["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
         file_map["1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"]="4x-UltraSharp.pth"
+        file_map["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
+        file_map["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
 
         local file_name="${file_map[$file_id]}"
         local file_path="$2/$file_name"
@@ -157,7 +179,10 @@ function provisioning_download() {
 
         echo "Downloading $file_name from Google Drive to $file_path"
         $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path"
-        echo "Download concluído: $file_path"
+
+        if [[ $? -ne 0 ]]; then
+            echo "Erro ao baixar o arquivo $file_name"
+        fi
     else
         local file_name=$(basename "$1")
         local file_path="$2/$file_name"
@@ -167,10 +192,18 @@ function provisioning_download() {
             mkdir -p "$2"
         fi
 
-        echo "Using wget to download $file_name to $file_path"
-        wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
-        echo "Download concluído: $file_path"
+        echo "Downloading $file_name to $file_path"
+        wget -O "$file_path" "$1"
+
+        if [[ $? -ne 0 ]]; then
+            echo "Erro ao baixar o arquivo $file_name"
+        fi
     fi
+}
+
+function provisioning_rename_ipadapter_models() {
+    mv "${WORKSPACE}/ComfyUI/models/ipadapter/clipvis_ViT-H_1.5_.safetensors" "${WORKSPACE}/ComfyUI/models/ipadapter/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+    mv "${WORKSPACE}/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.bin" "${WORKSPACE}/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors"
 }
 
 provisioning_start
