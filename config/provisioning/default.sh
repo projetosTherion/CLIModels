@@ -3,6 +3,7 @@
 # Este arquivo será chamado em init.sh
 
 PYTHON_PACKAGES=(
+    "diffusers==0.28.0"
     # "opencv-python==4.7.0.72"
 )
 
