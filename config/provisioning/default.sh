@@ -4,7 +4,8 @@
 
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
-    # "opencv-python==4.7.0.72"
+    "requests"
+    "flask"
 )
 
 NODES=(
@@ -20,13 +21,11 @@ NODES=(
 )
 
 CHECKPOINT_MODELS=(
-    #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"
 )
 
 LORA_MODELS=(
     #"https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
-    
 )
 
 VAE_MODELS=(
@@ -34,7 +33,6 @@ VAE_MODELS=(
 )
 
 ESRGAN_MODELS=(
-    #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
     "https://drive.google.com/uc?id=1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"
 )
 
@@ -51,6 +49,8 @@ CLIPVISION_MODELS=(
 IPADAPTER_MODELS=(
     "https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
 )
+
+WORKFLOW_JSON_URL="https://drive.google.com/uc?id=1d0qOyMw0GxuXmVwM3DQFGvcSN89yOYk9"
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -83,6 +83,7 @@ function provisioning_start() {
         "${WORKSPACE}/storage/stable_diffusion/models/ipadapter" \
         "${IPADAPTER_MODELS[@]}"
     provisioning_rename_ipadapter_models
+    provisioning_download_workflow
     provisioning_print_end
 }
 
@@ -158,6 +159,7 @@ function provisioning_print_header() {
 
 function provisioning_print_end() {
     printf "\nProvisioning complete: Web UI will start now\n\n"
+    start_comfyui
 }
 
 # Download from $1 URL to $2 file path
@@ -173,7 +175,6 @@ function provisioning_download() {
         file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
         file_map["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
         file_map["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
-        file_map["1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"]="4x-UltraSharp.pth"
         file_map["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
         file_map["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
         file_map["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
@@ -213,6 +214,24 @@ function provisioning_download() {
 function provisioning_rename_ipadapter_models() {
     mv "${WORKSPACE}/ComfyUI/models/ipadapter/clipvis_ViT-H_1.5_.safetensors" "${WORKSPACE}/ComfyUI/models/ipadapter/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
     mv "${WORKSPACE}/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.bin" "${WORKSPACE}/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors"
+}
+
+function provisioning_download_workflow() {
+    local file_path="${WORKSPACE}/workflow.json"
+    
+    echo "Downloading workflow JSON from Google Drive to $file_path"
+    curl -L -o "$file_path" "$WORKFLOW_JSON_URL"
+    
+    if [[ $? -ne 0 ]]; then
+        echo "Erro ao baixar o arquivo workflow.json"
+    else
+        echo "Workflow JSON baixado com sucesso!"
+    fi
+}
+
+function start_comfyui() {
+    # Iniciar o ComfyUI com o workflow baixado
+    python main.py --workflow "${WORKSPACE}/workflow.json"
 }
 
 provisioning_start
