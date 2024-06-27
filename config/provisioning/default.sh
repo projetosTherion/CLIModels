@@ -233,14 +233,22 @@ function provisioning_download_workflow() {
 function start_comfyui() {
     echo "Iniciando o ComfyUI..."
     nohup micromamba run -n comfyui python /opt/ComfyUI/main.py &
-
-    echo "Aguardando 15 segundos para o ComfyUI iniciar..."
+    
+    # Aguardando 15 segundos para o ComfyUI iniciar
     sleep 15
     
-    echo "Carregando o workflow JSON..."
-    curl -X POST -H "Content-Type: application/json" -d @"${WORKSPACE}/workflow.json" http://0.0.0.0/prompt
+    local current_ip=$(hostname -I | cut -d' ' -f1)
+    echo "IP atual detectado: $current_ip"
     
-    echo "ComfyUI e workflow JSON carregados com sucesso!"
+    echo "Carregando o workflow JSON..."
+    curl -X POST -H "Content-Type: application/json" -d @"${WORKSPACE}/workflow.json" "http://$current_ip:8188/prompt"
+    
+    if [[ $? -ne 0 ]]; then
+        echo "Erro ao carregar o workflow JSON para o ComfyUI."
+    else
+        echo "ComfyUI e workflow JSON carregados com sucesso!"
+    fi
 }
+
 
 provisioning_start
