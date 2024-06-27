@@ -175,6 +175,7 @@ function provisioning_download() {
         file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
         file_map["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
         file_map["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
+        file_map["1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"]="4x-UltraSharp.pth"
         file_map["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
         file_map["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
         file_map["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
@@ -230,8 +231,16 @@ function provisioning_download_workflow() {
 }
 
 function start_comfyui() {
-    # Iniciar o ComfyUI com o workflow baixado
-    python main.py --workflow "${WORKSPACE}/workflow.json"
+    echo "Iniciando o ComfyUI..."
+    nohup micromamba run -n comfyui python /opt/ComfyUI/main.py &
+
+    echo "Aguardando 10 segundos para o ComfyUI iniciar..."
+    sleep 15
+    
+    echo "Carregando o workflow JSON..."
+    curl -X POST -H "Content-Type: application/json" -d @"${WORKSPACE}/workflow.json" http://127.0.0.1:18188/prompt
+    
+    echo "ComfyUI e workflow JSON carregados com sucesso!"
 }
 
 provisioning_start
