@@ -234,7 +234,7 @@ function start_comfyui() {
     echo "Iniciando o ComfyUI..."
     nohup micromamba run -n comfyui python /opt/ComfyUI/main.py &
 
-    echo "Aguardando 10 segundos para o ComfyUI iniciar..."
+    echo "Aguardando 15 segundos para o ComfyUI iniciar..."
     sleep 15
     
     echo "Carregando o workflow JSON..."
