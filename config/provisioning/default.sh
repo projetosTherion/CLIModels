@@ -238,7 +238,7 @@ function start_comfyui() {
     sleep 15
     
     echo "Carregando o workflow JSON..."
-    curl -X POST -H "Content-Type: application/json" -d @"${WORKSPACE}/workflow.json" http://127.0.0.1:18188/prompt
+    curl -X POST -H "Content-Type: application/json" -d @"${WORKSPACE}/workflow.json" http://0.0.0.0/prompt
     
     echo "ComfyUI e workflow JSON carregados com sucesso!"
 }
