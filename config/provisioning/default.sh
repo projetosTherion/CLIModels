@@ -92,15 +92,13 @@ function provisioning_get_nodes() {
         dir="${repo##*/}"
         path="/opt/ComfyUI/custom_nodes/${dir}"
         requirements="${path}/requirements.txt"
-        if [[ -d $path ]]; then
-            if [[ ${AUTO_UPDATE,,} != "false" ]]; then
-                printf "Updating node: %s...\n" "${repo}"
-                ( cd "$path" && git pull )
-                if [[ -e $requirements ]]; then
-                    micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
-                fi
+        if ([[ -d $path ]] && [[ ${AUTO_UPDATE,,} != "false" ]]); then
+            printf "Updating node: %s...\n" "${repo}"
+            ( cd "$path" && git pull )
+            if [[ -e $requirements ]]; then
+                micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
             fi
-        else
+        elif [[ ! -d $path ]]; then
             printf "Downloading node: %s...\n" "${repo}"
             git clone "${repo}" "${path}" --recursive
             if [[ $? -ne 0 ]]; then
@@ -160,16 +158,13 @@ function provisioning_print_header() {
 function provisioning_print_end() {
     printf "\nProvisioning complete: Web UI will start now\n\n"
     start_comfyui
+    start_monitoring
 }
 
-# Download from $1 URL to $2 file path
+# Funcão para baixar os arquivos usando gdown ou wget
 function provisioning_download() {
-    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
-
-    if [[ $1 == *"drive.google.com"* ]]; then
-        local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-        
-        # Mapeamento de IDs para nomes de arquivos
+    gdown_path=$(which gdown)
+    if [[ -n "$gdown_path" && $1 == *"drive.google.com"* ]]; then
         declare -A file_map
         file_map["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
         file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
@@ -178,6 +173,7 @@ function provisioning_download() {
         file_map["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
         file_map["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
         file_map["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
+
 
         local file_name="${file_map[$file_id]}"
         local file_path="$2/$file_name"
@@ -232,22 +228,11 @@ function provisioning_download_workflow() {
 function start_comfyui() {
     echo "Iniciando o ComfyUI..."
     nohup micromamba run -n comfyui python /opt/ComfyUI/main.py &
-    
-    # Aguardando 15 segundos para o ComfyUI iniciar
-    sleep 15
-    
-    local current_ip=$(hostname -I | cut -d' ' -f1)
-    echo "IP atual detectado: $current_ip"
-    
-    echo "Carregando o workflow JSON..."
-    curl -X POST -H "Content-Type: application/json" -d @"${WORKSPACE}/workflow.json" "http://$current_ip:8188/prompt"
-    
-    if [[ $? -ne 0 ]]; then
-        echo "Erro ao carregar o workflow JSON para o ComfyUI."
-    else
-        echo "ComfyUI e workflow JSON carregados com sucesso!"
-    fi
 }
 
+function start_monitoring() {
+    echo "Iniciando monitoramento do log do ComfyUI..."
+    nohup bash /opt/monitor_comfyui.sh &
+}
 
 provisioning_start
