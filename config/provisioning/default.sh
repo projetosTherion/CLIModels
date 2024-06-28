@@ -4,8 +4,7 @@
 
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
-    "requests"
-    "flask"
+    # "opencv-python==4.7.0.72"
 )
 
 NODES=(
@@ -21,11 +20,13 @@ NODES=(
 )
 
 CHECKPOINT_MODELS=(
+    #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"
 )
 
 LORA_MODELS=(
     #"https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
+    
 )
 
 VAE_MODELS=(
@@ -33,6 +34,7 @@ VAE_MODELS=(
 )
 
 ESRGAN_MODELS=(
+    #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
     "https://drive.google.com/uc?id=1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"
 )
 
@@ -49,8 +51,6 @@ CLIPVISION_MODELS=(
 IPADAPTER_MODELS=(
     "https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
 )
-
-WORKFLOW_JSON_URL="https://drive.google.com/uc?id=1d0qOyMw0GxuXmVwM3DQFGvcSN89yOYk9"
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -83,7 +83,6 @@ function provisioning_start() {
         "${WORKSPACE}/storage/stable_diffusion/models/ipadapter" \
         "${IPADAPTER_MODELS[@]}"
     provisioning_rename_ipadapter_models
-    provisioning_download_workflow
     provisioning_print_end
 }
 
@@ -92,13 +91,15 @@ function provisioning_get_nodes() {
         dir="${repo##*/}"
         path="/opt/ComfyUI/custom_nodes/${dir}"
         requirements="${path}/requirements.txt"
-        if ([[ -d $path ]] && [[ ${AUTO_UPDATE,,} != "false" ]]); then
-            printf "Updating node: %s...\n" "${repo}"
-            ( cd "$path" && git pull )
-            if [[ -e $requirements ]]; then
-                micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
+        if [[ -d $path ]]; then
+            if [[ ${AUTO_UPDATE,,} != "false" ]]; then
+                printf "Updating node: %s...\n" "${repo}"
+                ( cd "$path" && git pull )
+                if [[ -e $requirements ]]; then
+                    micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
+                fi
             fi
-        elif [[ ! -d $path ]]; then
+        else
             printf "Downloading node: %s...\n" "${repo}"
             git clone "${repo}" "${path}" --recursive
             if [[ $? -ne 0 ]]; then
@@ -157,23 +158,25 @@ function provisioning_print_header() {
 
 function provisioning_print_end() {
     printf "\nProvisioning complete: Web UI will start now\n\n"
-    start_comfyui
-    start_monitoring
 }
 
-# Funcão para baixar os arquivos usando gdown ou wget
+# Download from $1 URL to $2 file path
 function provisioning_download() {
-    gdown_path=$(which gdown)
-    if [[ -n "$gdown_path" && $1 == *"drive.google.com"* ]]; then
+    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
+
+    if [[ $1 == *"drive.google.com"* ]]; then
+        local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
+        
+        # Mapeamento de IDs para nomes de arquivos
         declare -A file_map
         file_map["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
         file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
         file_map["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
         file_map["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
+        file_map["1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"]="4x-UltraSharp.pth"
         file_map["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
         file_map["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
         file_map["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
-
 
         local file_name="${file_map[$file_id]}"
         local file_path="$2/$file_name"
@@ -210,29 +213,6 @@ function provisioning_download() {
 function provisioning_rename_ipadapter_models() {
     mv "${WORKSPACE}/ComfyUI/models/ipadapter/clipvis_ViT-H_1.5_.safetensors" "${WORKSPACE}/ComfyUI/models/ipadapter/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
     mv "${WORKSPACE}/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.bin" "${WORKSPACE}/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors"
-}
-
-function provisioning_download_workflow() {
-    local file_path="${WORKSPACE}/workflow.json"
-    
-    echo "Downloading workflow JSON from Google Drive to $file_path"
-    curl -L -o "$file_path" "$WORKFLOW_JSON_URL"
-    
-    if [[ $? -ne 0 ]]; then
-        echo "Erro ao baixar o arquivo workflow.json"
-    else
-        echo "Workflow JSON baixado com sucesso!"
-    fi
-}
-
-function start_comfyui() {
-    echo "Iniciando o ComfyUI..."
-    nohup micromamba run -n comfyui python /opt/ComfyUI/main.py &
-}
-
-function start_monitoring() {
-    echo "Iniciando monitoramento do log do ComfyUI..."
-    nohup bash /opt/monitor_comfyui.sh &
 }
 
 provisioning_start
