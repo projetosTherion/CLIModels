@@ -26,11 +26,10 @@ CHECKPOINT_MODELS=(
 
 LORA_MODELS=(
     #"https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
-    
 )
 
 VAE_MODELS=(
-   #"https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
+    #"https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
 )
 
 ESRGAN_MODELS=(
@@ -61,28 +60,13 @@ function provisioning_start() {
     provisioning_print_header
     provisioning_get_nodes
     provisioning_install_python_packages
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/ckpt" \
-        "${CHECKPOINT_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/lora" \
-        "${LORA_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/controlnet" \
-        "${CONTROLNET_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/vae" \
-        "${VAE_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
-        "${ESRGAN_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/clip_vision" \
-        "${CLIPVISION_MODELS[@]}"
-    provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/ipadapter" \
-        "${IPADAPTER_MODELS[@]}"
-    provisioning_rename_ipadapter_models
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ckpt" "${CHECKPOINT_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/lora" "${LORA_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/controlnet" "${CONTROLNET_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/vae" "${VAE_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/esrgan" "${ESRGAN_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/clip_vision" "${CLIPVISION_MODELS[@]}"
+    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ipadapter" "${IPADAPTER_MODELS[@]}"
     provisioning_print_end
 }
 
@@ -94,55 +78,38 @@ function provisioning_get_nodes() {
         if [[ -d $path ]]; then
             if [[ ${AUTO_UPDATE,,} != "false" ]]; then
                 printf "Updating node: %s...\n" "${repo}"
-                ( cd "$path" && git pull )
-                if [[ -e $requirements ]]; then
-                    micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
-                fi
+                (cd "$path" && git pull)
+                [[ -e $requirements ]] && micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
             fi
         else
             printf "Downloading node: %s...\n" "${repo}"
-            git clone "${repo}" "${path}" --recursive
-            if [[ $? -ne 0 ]]; then
-                echo "Erro ao clonar o repositório: ${repo}"
-                continue
-            fi
-            if [[ -e $requirements ]]; then
-                micromamba -n comfyui run ${PIP_INSTALL} -r "${requirements}"
-                if [[ $? -ne 0 ]]; then
-                    echo "Erro ao instalar os pacotes do ${requirements} do repositório: ${repo}"
-                fi
-            else
-                # Verifique as dependências manualmente
-                if [[ "${dir}" == "TherionIPAdapter" ]]; then
-                    echo "Instalando dependências manualmente para ${dir}"
-                    micromamba -n comfyui run pip install numpy opencv-python torch
-                fi
-            fi
+            git clone "${repo}" "${path}" --recursive || { echo "Erro ao clonar o repositório: ${repo}"; continue; }
+            [[ -e $requirements ]] && micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
         fi
+
+        # Verifique as dependências manualmente para repos específicos
+        [[ "$dir" == "TherionIPAdapter" ]] && micromamba -n comfyui run pip install numpy opencv-python torch
     done
 }
 
 function provisioning_install_python_packages() {
     micromamba -n comfyui run pip install gdown --upgrade
-    if [ ${#PYTHON_PACKAGES[@]} -gt 0 ]; then
-        micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
-    fi
+    [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
 }
 
 function provisioning_get_models() {
-    if [[ -z $2 ]]; then return 1; fi
-    dir="$1"
-    mkdir -p "$dir"
+    local dir="$1"
     shift
-    if [[ $DISK_GB_ALLOCATED -ge $DISK_GB_REQUIRED ]]; then
-        arr=("$@")
-    else
+    mkdir -p "$dir"
+    local models=("$@")
+
+    if [[ $DISK_GB_ALLOCATED -lt $DISK_GB_REQUIRED ]]; then
         printf "WARNING: Low disk space allocation - Only the first model will be downloaded!\n"
-        arr=("$1")
+        models=("${models[0]}")
     fi
-    
-    printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
-    for url in "${arr[@]}"; do
+
+    printf "Downloading %s model(s) to %s...\n" "${#models[@]}" "$dir"
+    for url in "${models[@]}"; do
         printf "Downloading: %s\n" "${url}"
         provisioning_download "${url}" "${dir}"
         printf "\n"
@@ -151,9 +118,7 @@ function provisioning_get_models() {
 
 function provisioning_print_header() {
     printf "\n##############################################\n#                                            #\n#          Provisioning container            #\n#                                            #\n#         This will take some time           #\n#                                            #\n# Your container will be ready on completion #\n#                                            #\n##############################################\n\n"
-    if [[ $DISK_GB_ALLOCATED -lt $DISK_GB_REQUIRED ]]; then
-        printf "WARNING: Your allocated disk size (%sGB) is below the recommended %sGB - Some models will not be downloaded\n" "$DISK_GB_ALLOCATED" "$DISK_GB_REQUIRED"
-    fi
+    [[ $DISK_GB_ALLOCATED -lt $DISK_GB_REQUIRED ]] && printf "WARNING: Your allocated disk size (%sGB) is below the recommended %sGB - Some models will not be downloaded\n" "$DISK_GB_ALLOCATED" "$DISK_GB_REQUIRED"
 }
 
 function provisioning_print_end() {
@@ -162,52 +127,40 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"  # Caminho completo para o gdown
+    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"
+    local file_id
+    local file_name
+    local file_path
 
     if [[ $1 == *"drive.google.com"* ]]; then
-        local file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-        
-        # Mapeamento de IDs para nomes de arquivos
-        declare -A file_map
-        file_map["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
-        file_map["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
-        file_map["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
-        file_map["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
-        file_map["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
-        file_map["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
-        file_map["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
+        file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
 
-        local file_name="${file_map[$file_id]}"
-        local file_path="$2/$file_name"
+        declare -A file_map=(
+            ["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
+            ["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
+            ["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
+            ["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
+            ["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
+            ["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
+            ["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
+        )
 
-        if [[ ! -d $2 ]]; then
-            echo "Diretório de destino $2 não existe. Criando diretório..."
-            mkdir -p "$2"
-        fi
+        file_name="${file_map[$file_id]}"
+        file_path="$2/$file_name"
+
+        [[ ! -d $2 ]] && mkdir -p "$2"
 
         echo "Downloading $file_name from Google Drive to $file_path"
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path"
-
-        if [[ $? -ne 0 ]]; then
-            echo "Erro ao baixar o arquivo $file_name"
-        fi
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" || echo "Erro ao baixar o arquivo $file_name"
     else
-        local file_name=$(basename "$1")
-        local file_path="$2/$file_name"
+        file_name=$(basename "$1")
+        file_path="$2/$file_name"
 
-        if [[ ! -d $2 ]]; then
-            echo "Diretório de destino $2 não existe. Criando diretório..."
-            mkdir -p "$2"
-        fi
+        [[ ! -d $2 ]] && mkdir -p "$2"
 
         echo "Downloading $file_name to $file_path"
-        wget -O "$file_path" "$1"
-
-        if [[ $? -ne 0 ]]; then
-            echo "Erro ao baixar o arquivo $file_name"
-        fi
+        wget -O "$file_path" "$1" || echo "Erro ao baixar o arquivo $file_name"
     fi
 }
-
 
 provisioning_start
