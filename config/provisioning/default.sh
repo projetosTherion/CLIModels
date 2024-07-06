@@ -209,9 +209,5 @@ function provisioning_download() {
     fi
 }
 
-function provisioning_rename_ipadapter_models() {
-    mv "${WORKSPACE}/ComfyUI/models/ipadapter/clipvis_ViT-H_1.5_.safetensors" "${WORKSPACE}/ComfyUI/models/ipadapter/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
-    mv "${WORKSPACE}/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.bin" "${WORKSPACE}/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors"
-}
 
 provisioning_start
