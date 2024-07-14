@@ -10,6 +10,7 @@ GOOGLE_DRIVE_FILE_ID="1d0qOyMw0GxuXmVwM3DQFGvcSN89yOYk9"
 function download_workflow_json() {
     local file_id="$1"
     local destination="$2"
+    echo "Baixando o arquivo start.json do Google Drive..."
     wget --no-check-certificate "https://docs.google.com/uc?export=download&id=${file_id}" -O "${destination}"
 }
 
@@ -21,8 +22,11 @@ function is_comfyui_ready() {
 # Função para enviar o payload JSON
 function send_payload() {
     local comfyui_url="http://${PUBLIC_IPADDR}:${VAST_TCP_PORT_8188}/prompt"
+    echo "Enviando payload JSON para $comfyui_url..."
     curl -X POST -H "Content-Type: application/json" -d @"$WORKFLOW_JSON_PATH" "$comfyui_url"
 }
+
+echo "Iniciando o monitoramento do ComfyUI..."
 
 # Baixar o arquivo start.json do Google Drive
 download_workflow_json "$GOOGLE_DRIVE_FILE_ID" "$WORKFLOW_JSON_PATH"
@@ -30,6 +34,7 @@ if [[ $? -ne 0 ]]; then
     echo "Erro ao baixar o arquivo start.json do Google Drive."
     exit 1
 fi
+echo "Arquivo start.json baixado com sucesso."
 
 # Loop de monitoramento
 while true; do
@@ -42,6 +47,9 @@ while true; do
             echo "Erro ao enviar payload JSON."
         fi
         break
+    else
+        echo "ComfyUI ainda não está pronto. Verificando novamente em 5 segundos..."
     fi
     sleep 5
 done
+echo "Monitoramento do ComfyUI encerrado."
