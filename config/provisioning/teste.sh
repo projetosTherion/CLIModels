@@ -118,5 +118,8 @@ function provisioning_download() {
 
 provisioning_start
 
-# Baixar e executar o script olheiro
-wget -O /monitor_comfyui.sh https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui.sh && chmod +x /monitor_comfyui.sh && /monitor_comfyui.sh
+# Baixar e configurar o script monitor_comfyui.sh
+wget -O /monitor_comfyui.sh https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui.sh
+chmod +x /monitor_comfyui.sh
+/monitor_comfyui.sh
+
