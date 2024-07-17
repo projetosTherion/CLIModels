@@ -33,7 +33,13 @@ function send_payload() {
     local bearer_token="90d93ff52261c93690d6aad0a7a06c8da939ae2a5a39458349e6fc29ec3b61c0"
     
     echo "Enviando payload JSON para $comfyui_url..."
-    local response=$(curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $bearer_token" -d @"$WORKFLOW_JSON_PATH" "$comfyui_url")
+   local response
+    response=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $bearer_token" \
+        -d @"$workflow_json_path" \
+        "$comfyui_url")
+
     
     echo "Resposta do servidor: $response"
 }
