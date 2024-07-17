@@ -19,6 +19,12 @@ function is_comfyui_ready() {
     tail -n 50 "$LOG_FILE" | grep -q "Running on http://"
 }
 
+# Função para verificar se o ComfyUI está em execução
+check_comfyui() {
+    curl -s --head http://${PUBLIC_IPADDR}:${VAST_TCP_PORT_8188} | head -n 1 | grep "HTTP/1.[01] [23].." > /dev/null
+    return $?
+}
+
 # Função para enviar o payload JSON
 function send_payload() {
     local comfyui_url="http://${PUBLIC_IPADDR}:${VAST_TCP_PORT_8188}/prompt"
@@ -28,13 +34,24 @@ function send_payload() {
 
 echo "Iniciando o monitoramento do ComfyUI..."
 
-# Baixar o arquivo start.json do Google Drive
-download_workflow_json "$GOOGLE_DRIVE_FILE_ID" "$WORKFLOW_JSON_PATH"
-if [[ $? -ne 0 ]]; then
-    echo "Erro ao baixar o arquivo start.json do Google Drive."
-    exit 1
-fi
-echo "Arquivo start.json baixado com sucesso."
+# Loop para verificar se o ComfyUI está pronto e baixar o arquivo start.json
+while true; do
+    if check_comfyui; then
+        echo "ComfyUI está pronto."
+        if [ ! -f $WORKFLOW_JSON_PATH ]; then
+            download_workflow_json "$GOOGLE_DRIVE_FILE_ID" "$WORKFLOW_JSON_PATH"
+            if [[ $? -ne 0 ]]; then
+                echo "Erro ao baixar o arquivo start.json do Google Drive."
+                exit 1
+            fi
+            echo "Arquivo start.json baixado com sucesso."
+        fi
+        break
+    else
+        echo "ComfyUI ainda não está pronto. Verificando novamente em 5 segundos..."
+        sleep 5
+    fi
+done
 
 # Loop de monitoramento
 while true; do
@@ -52,4 +69,5 @@ while true; do
     fi
     sleep 5
 done
+
 echo "Monitoramento do ComfyUI encerrado."
