@@ -116,6 +116,7 @@ function provisioning_download() {
     wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
 }
 
+# Baixar e configurar o script monitor_comfyui.sh
 function download_monitor_script() {
     local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui.sh"
     local destination="/monitor_comfyui.sh"
@@ -135,4 +136,3 @@ provisioning_start
 
 # Chame a função para baixar e executar o monitor
 download_monitor_script
-
