@@ -65,7 +65,7 @@ while true; do
         fi
         break
     else
-        echo "ComfyUI ainda não está pronto. Verificando novamente em 5 segundos..."
+        echo "ComfyUI ainda não está pronto.Estou no comfy de monitoramento para enviar o payload Verificando novamente em 5 segundos..."
     fi
     sleep 5
 done
