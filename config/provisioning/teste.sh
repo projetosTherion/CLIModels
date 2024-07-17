@@ -116,10 +116,23 @@ function provisioning_download() {
     wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
 }
 
+function download_monitor_script() {
+    local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui.sh"
+    local destination="/monitor_comfyui.sh"
+    
+    echo "Baixando o script monitor_comfyui.sh..."
+    if wget -O "$destination" "$url"; then
+        echo "Script baixado com sucesso."
+        chmod +x "$destination"
+        "$destination"
+    else
+        echo "Erro ao baixar o script monitor_comfyui.sh."
+        exit 1
+    fi
+}
+
 provisioning_start
 
-# Baixar e configurar o script monitor_comfyui.sh
-wget -O /monitor_comfyui.sh https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui.sh
-chmod +x /monitor_comfyui.sh
-/monitor_comfyui.sh
+# Chame a função para baixar e executar o monitor
+download_monitor_script
 
