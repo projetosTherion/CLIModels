@@ -16,8 +16,9 @@ function download_workflow_json() {
 
 # Função para verificar se o ComfyUI está pronto
 function is_comfyui_ready() {
-    tail -n 50 "$LOG_FILE" | grep -q "Running on http://"
+    tail -n 50 "$LOG_FILE" | grep -q "Provisioning complete:  Web UI will start now"
 }
+
 
 # Função para verificar se o ComfyUI está em execução
 check_comfyui() {
