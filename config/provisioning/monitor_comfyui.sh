@@ -29,7 +29,7 @@ check_comfyui() {
 
 # Função para enviar o payload JSON
 function send_payload() {
-    local comfyui_url="http://${PUBLIC_IPADDR}:${VAST_TCP_PORT_8188}/prompt"
+    local comfyui_url="http://localhost:8188/prompt"
     local bearer_token="90d93ff52261c93690d6aad0a7a06c8da939ae2a5a39458349e6fc29ec3b61c0"
     
     echo "Enviando payload JSON para $comfyui_url..."
