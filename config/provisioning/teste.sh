@@ -125,7 +125,7 @@ function download_monitor_script() {
     if wget -O "$destination" "$url"; then
         echo "Script baixado com sucesso."
         chmod +x "$destination"
-        "$destination"
+        "$destination" & # Executa o script em segundo plano
     else
         echo "Erro ao baixar o script monitor_comfyui.sh."
         exit 1
