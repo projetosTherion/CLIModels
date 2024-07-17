@@ -62,7 +62,7 @@ done
 
 # Loop de monitoramento
 while true; do
-   if is_comfyui_ready; then
+    if is_comfyui_ready; then
         echo "ComfyUI está pronto. Enviando payload JSON..."
         send_payload
         if [[ $? -eq 0 ]]; then
@@ -75,7 +75,6 @@ while true; do
         echo "ComfyUI ainda não está pronto. Verificando novamente em 5 segundos..."
     fi
     sleep 5
-   
 done
 
 echo "Monitoramento do ComfyUI encerrado."
