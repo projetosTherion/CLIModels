@@ -17,7 +17,7 @@ function download_workflow_json() {
 
 # Função para verificar se o ComfyUI está pronto
 function is_comfyui_ready() {
-    tail -n 500 "$LOG_FILE" | grep -q "FETCH DATA from: /workspace/ComfyUI/custom_nodes/ComfyUI-Manager/extension-node-map.json [DONE]"
+    tail -n 500 "$LOG_FILE" | grep -q "Prestartup times for custom nodes:"
 }
 
 
