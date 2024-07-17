@@ -17,7 +17,7 @@ function download_workflow_json() {
 
 # Função para verificar se o ComfyUI está pronto
 function is_comfyui_ready() {
-    tail -n 500 "$LOG_FILE" | grep -q "Prestartup times for custom nodes:"
+    tail -n 500 "$LOG_FILE" | grep -q "[ComfyUI-Manager] default cache updated: https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/custom-node-list.json"
 }
 
 
