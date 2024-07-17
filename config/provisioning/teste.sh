@@ -119,7 +119,7 @@ function provisioning_download() {
 # Baixar e configurar o script monitor_comfyui.sh
 function download_monitor_script() {
     local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui.sh"
-    local destination="/monitor_comfyui.sh"
+    local destination="/workspace/monitor_comfyui.sh"
     
     echo "Baixando o script monitor_comfyui.sh..."
     if wget -O "$destination" "$url"; then
