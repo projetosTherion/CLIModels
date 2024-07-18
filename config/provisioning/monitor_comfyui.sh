@@ -4,8 +4,8 @@ LOG_FILE="/var/log/supervisor/comfyui.log"
 WORKFLOW_JSON_PATH="rob.json"
 PUBLIC_IPADDR=${PUBLIC_IPADDR}
 VAST_TCP_PORT_8188=${VAST_TCP_PORT_8188}
-#GOOGLE_DRIVE_FILE_ID="1d0qOyMw0GxuXmVwM3DQFGvcSN89yOYk9"#start
-GOOGLE_DRIVE_FILE_ID="13YRrxtRK2kAv1Pg9A7y50i1xEMv6tSKg" #ROB
+# GOOGLE_DRIVE_FILE_ID="1d0qOyMw0GxuXmVwM3DQFGvcSN89yOYk9" # start
+GOOGLE_DRIVE_FILE_ID="13YRrxtRK2kAv1Pg9A7y50i1xEMv6tSKg" # ROB
 
 # Função para baixar o arquivo JSON do Google Drive
 function download_workflow_json() {
@@ -20,7 +20,6 @@ function is_comfyui_ready() {
     tail -n 500 "$LOG_FILE" | grep -q "Prestartup times for custom nodes:"
 }
 
-
 # Função para verificar se o ComfyUI está em execução
 check_comfyui() {
     curl -s --head http://${PUBLIC_IPADDR}:${VAST_TCP_PORT_8188} | head -n 1 | grep "HTTP/1.[01] [23].." > /dev/null
@@ -33,21 +32,20 @@ function send_payload() {
     local bearer_token="90d93ff52261c93690d6aad0a7a06c8da939ae2a5a39458349e6fc29ec3b61c0"
     
     echo "Enviando payload JSON para $comfyui_url..."
-   local response
+    local response
     response=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $bearer_token" \
         -d @"$WORKFLOW_JSON_PATH" \
         "$comfyui_url")
 
-        if [[ "$response" -ge 200 && "$response" -lt 300 ]]; then
+    if [[ "$response" -ge 200 && "$response" -lt 300 ]]; then
         echo "Payload enviado com sucesso. Código de resposta: $response"
     else
         echo "Falha ao enviar payload. Código de resposta: $response"
     fi
-return 0
+    return 0
 }
-
 
 echo "Iniciando o monitoramento do ComfyUI..."
 
@@ -69,6 +67,10 @@ while true; do
         sleep 5
     fi
 done
+
+# Espera adicional para garantir que o ComfyUI esteja pronto
+echo "Aguardando 10 segundos adicionais para garantir que o ComfyUI esteja totalmente inicializado..."
+sleep 10
 
 # Loop de monitoramento
 while true; do
