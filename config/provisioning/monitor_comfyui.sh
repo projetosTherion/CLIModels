@@ -37,11 +37,15 @@ function send_payload() {
     response=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $bearer_token" \
-        -d @"$workflow_json_path" \
+        -d @"$WORKFLOW_JSON_PATH" \
         "$comfyui_url")
 
-    
-    echo "Resposta do servidor: $response"
+        if [[ "$response" -ge 200 && "$response" -lt 300 ]]; then
+        echo "Payload enviado com sucesso. Código de resposta: $response"
+    else
+        echo "Falha ao enviar payload. Código de resposta: $response"
+    fi
+return 0
 }
 
 
