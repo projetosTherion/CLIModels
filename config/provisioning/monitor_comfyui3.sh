@@ -1,5 +1,8 @@
 #!/bin/bash
 
+micromamba -n comfyui run pip install rclone --upgrade
+rclone config create gdrive drive
+
 LOG_FILE="/var/log/supervisor/comfyui.log"
 WORKFLOW_JSON_PATH="start.json"
 PUBLIC_IPADDR=${PUBLIC_IPADDR}
