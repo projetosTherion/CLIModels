@@ -2,6 +2,19 @@
 
 # Este arquivo será chamado em init.sh
 
+# Instalação e configuração do rclone
+micromamba -n comfyui run pip install rclone --upgrade
+
+# Diretório onde o rclone.conf será copiado
+RCLONE_CONFIG_PATH="/opt/micromamba/envs/comfyui/.config/rclone/rclone.conf"
+
+# Copie o rclone.conf para o local correto
+mkdir -p /opt/micromamba/envs/comfyui/.config/rclone
+cp /caminho/para/seu/rclone.conf $RCLONE_CONFIG_PATH
+
+# Verifique se o rclone está configurado corretamente
+rclone listremotes --config $RCLONE_CONFIG_PATH
+
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
     # "opencv-python==4.7.0.72"
@@ -18,7 +31,6 @@ NODES=(
     "https://github.com/projetosTherion/TherionEssentials"
     "https://github.com/projetosTherion/TherionInspire"
 )
-
 
 CHECKPOINT_MODELS=(
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
@@ -94,8 +106,8 @@ function provisioning_get_nodes() {
 }
 
 function provisioning_install_python_packages() {
-micromamba -n comfyui run pip install rclone --upgrade
-rclone config create gdrive drive
+    micromamba -n comfyui run pip install rclone --upgrade
+    rclone config create gdrive drive --config $RCLONE_CONFIG_PATH
     
     [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
 }
@@ -145,7 +157,7 @@ function provisioning_download() {
             ["18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"]="LoraModelCanny.safetensors"
             ["1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"]="swift_srgan_2x.pth"
             ["1NbNcy3CXzDeHOLKGPTD2C4htjYzCv8TA"]="clipvis_ViT-H_1.5_.safetensors"
-            ["1uO4xV1JAh3BLv1lwaliCBTKZgliUPZ3c"]="ip-adapter-plus_sdxl_vit-h.bin"
+            ["1uO4xV1JAh3BLv1waliCBTKZgliUPZ3c"]="ip-adapter-plus_sdxl_vit-h.bin"
         )
 
         file_name="${file_map[$file_id]}"
@@ -154,7 +166,7 @@ function provisioning_download() {
         [[ ! -d $2 ]] && mkdir -p "$2"
 
         echo "Downloading $file_name from Google Drive to $file_path"
-        rclone copy "$remote:$file_id" "$file_path" || echo "Erro ao baixar o arquivo $file_name"
+        rclone copy "$remote:$file_id" "$file_path" --config $RCLONE_CONFIG_PATH || echo "Erro ao baixar o arquivo $file_name"
     else
         file_name=$(basename "$1")
         file_path="$2/$file_name"
