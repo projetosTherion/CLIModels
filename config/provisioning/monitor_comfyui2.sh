@@ -71,7 +71,7 @@ done
 
 # Espera adicional para garantir que o ComfyUI esteja pronto
 echo "Aguardando 10 segundos adicionais para garantir que o ComfyUI esteja totalmente inicializado..."
-sleep 10
+sleep 20
 
 # Loop de monitoramento
 while true; do
