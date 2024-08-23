@@ -2,7 +2,7 @@
 #!/bin/bash
 
 LOG_FILE="/var/log/supervisor/comfyui.log"
-WORKFLOW_JSON_PATH="start (1).json"
+WORKFLOW_JSON_PATH="start.json"
 PUBLIC_IPADDR=${PUBLIC_IPADDR}
 VAST_TCP_PORT_8188=${VAST_TCP_PORT_8188}
 GOOGLE_DRIVE_FILE_ID="1Rs7Q6BcAeFcwjk5bLUCurAKVcJg8Cid4" # start
