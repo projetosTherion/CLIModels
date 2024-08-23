@@ -169,13 +169,13 @@ function download_monitor_script() {
     local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui2.sh"
     local destination="/workspace/monitor_comfyui2.sh"
     
-    echo "Baixando o script monitor_comfyui.sh..."
+    echo "Baixando o script monitor_comfyui2.sh..."
     if wget -O "$destination" "$url"; then
         echo "Script baixado com sucesso."
         chmod +x "$destination"
         "$destination" & # Executa o script em segundo plano
     else
-        echo "Erro ao baixar o script monitor_comfyui.sh."
+        echo "Erro ao baixar o script monitor_comfyui2.sh."
         exit 1
     fi
 }
