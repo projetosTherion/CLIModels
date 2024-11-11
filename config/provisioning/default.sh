@@ -4,6 +4,7 @@
 
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
+    "transformers==4.32.0"
     # "opencv-python==4.7.0.72"
 )
 
