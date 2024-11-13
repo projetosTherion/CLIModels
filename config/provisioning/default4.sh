@@ -24,7 +24,7 @@ NODES=(
 CHECKPOINT_MODELS=(
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     #"https://drive.google.com/uc?id=1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"
-    "https://drive.google.com/uc?id=1vBVb9aTwHBZi7JCzcD3HTQqpjr1YFivg" #novo
+    "https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #novo
 )
 
 LORA_MODELS=(
@@ -46,10 +46,10 @@ CONTROLNET_MODELS=(
     #"https://drive.google.com/uc?id=18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv" #canny
     
     #novos
-    "https://drive.google.com/uc?id=1HMFsqU9gK8cKKm5efwWtOvNF7RXo7Q_y"
-    "https://drive.google.com/uc?id=1OylT27QTcraiRdOTsQe04rH81lFz3Lxr"
-    "https://drive.google.com/uc?id=1ZchTWFwLjyy3CRAUoh143odhZMr_ukgB"
-    "https://drive.google.com/uc?id=1NMqlMcIL0OGha32SW8nVhoWkNbP8tp-v"
+    "https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"
+    "https://drive.google.com/uc?id=1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"
+    "https://drive.google.com/uc?id=1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"
+    "https://drive.google.com/uc?id=1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"
 
 )
 
@@ -59,7 +59,7 @@ CLIPVISION_MODELS=(
 )
 IPADAPTER_MODELS=(
     #"https://drive.google.com/uc?id=1uO4xV1JAh3BLv1lwaliCBTKZgliUPZ3c"
-    "https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS" #novo
+    "https://drive.google.com/uc?id=1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq" #novo
     
     
 
@@ -161,12 +161,12 @@ function provisioning_download() {
             #["1uO4xV1JAh3BLv1waliCBTKZgliUPZ3c"]="ip-adapter-plus_sdxl_vit-h.bin"
 
             #novos
-            ["1vBVb9aTwHBZi7JCzcD3HTQqpjr1YFivg"]="Arcseed_1.5.V0.3.safetensors"
-            ["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
-            ["1HMFsqU9gK8cKKm5efwWtOvNF7RXo7Q_y"]="controlnet11Models_scribble.safetensors"
-            ["1OylT27QTcraiRdOTsQe04rH81lFz3Lxr"]="controlnet11Models_scribble.yaml"
-            ["1NMqlMcIL0OGha32SW8nVhoWkNbP8tp-v"]="controlnet11Models_depht.safetensors"
-            ["1ZchTWFwLjyy3CRAUoh143odhZMr_ukgB"]="controlnet11Models_depht.yaml"
+            ["1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq"]="Arcseed_1.5.V0.3.safetensors"
+            ["1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq"]="ip-adapter-plus_sdxl_vit-h.bin"
+            ["1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"]="controlnet11Models_scribble.safetensors"
+            ["1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"]="controlnet11Models_scribble.yaml"
+            ["1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"]="controlnet11Models_depht.safetensors"
+            ["1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"]="controlnet11Models_depht.yaml"
         )
 
         file_name="${file_map[$file_id]}"
