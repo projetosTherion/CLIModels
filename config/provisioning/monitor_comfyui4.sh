@@ -1,39 +1,18 @@
 #!/bin/bash
 
-# Instalação e configuração do rclone
-micromamba -n comfyui run pip install rclone --upgrade
-
-# Diretório onde o rclone.conf será copiado
-RCLONE_CONFIG_PATH="/opt/micromamba/envs/comfyui/.config/rclone/rclone.conf"
-
-# Copie o rclone.conf para o local correto
-mkdir -p /opt/micromamba/envs/comfyui/.config/rclone
-cp /caminho/para/seu/rclone.conf $RCLONE_CONFIG_PATH
-
-# Verifique se o rclone está configurado corretamente
-rclone listremotes --config $RCLONE_CONFIG_PATH
-
-# Variáveis de ambiente e outras configurações
 LOG_FILE="/var/log/supervisor/comfyui.log"
 WORKFLOW_JSON_PATH="StarterV2.json"
 PUBLIC_IPADDR=${PUBLIC_IPADDR}
 VAST_TCP_PORT_8188=${VAST_TCP_PORT_8188}
 GOOGLE_DRIVE_FILE_ID="1LmZ1-v6XKwqpwLT-pHqOmHop-rT0xBEX" # start
+#GOOGLE_DRIVE_FILE_ID="13YRrxtRK2kAv1Pg9A7y50i1xEMv6tSKg" # ROB
 
-# Função para baixar o arquivo JSON do Google Drive usando rclone
+# Função para baixar o arquivo JSON do Google Drive
 function download_workflow_json() {
     local file_id="$1"
     local destination="$2"
-    local remote="gdrive"
-    
-    echo "Baixando o arquivo start.json do Google Drive usando rclone..."
-    rclone copyto "${remote}:${file_id}" "${destination}" --drive-shared-with-me --drive-acknowledge-abuse --config $RCLONE_CONFIG_PATH
-    
-    if [[ $? -ne 0 ]]; then
-        echo "Erro ao baixar o arquivo StarterV2.json do Google Drive."
-        exit 1
-    fi
-    echo "Arquivo StarterV2.json baixado com sucesso."
+    echo "Baixando o arquivo start.json do Google Drive..."
+    wget --no-check-certificate "https://docs.google.com/uc?export=download&id=${file_id}" -O "${destination}"
 }
 
 # Função para verificar se o ComfyUI está pronto
@@ -77,10 +56,10 @@ while true; do
         if [ ! -f $WORKFLOW_JSON_PATH ]; then
             download_workflow_json "$GOOGLE_DRIVE_FILE_ID" "$WORKFLOW_JSON_PATH"
             if [[ $? -ne 0 ]]; then
-                echo "Erro ao baixar o arquivo StarterV2.json do Google Drive."
+                echo "Erro ao baixar o arquivo start.json do Google Drive."
                 exit 1
             fi
-            echo "Arquivo StarterV2.json baixado com sucesso."
+            echo "Arquivo start.json baixado com sucesso."
         fi
         break
     else
@@ -91,7 +70,7 @@ done
 
 # Espera adicional para garantir que o ComfyUI esteja pronto
 echo "Aguardando 10 segundos adicionais para garantir que o ComfyUI esteja totalmente inicializado..."
-sleep 10
+sleep 20
 
 # Loop de monitoramento
 while true; do
