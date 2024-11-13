@@ -2,6 +2,19 @@
 
 # Este arquivo será chamado em init.sh
 
+# Instalação e configuração do rclone
+micromamba -n comfyui run pip install rclone --upgrade
+
+# Diretório onde o rclone.conf será copiado
+RCLONE_CONFIG_PATH="/opt/micromamba/envs/comfyui/.config/rclone/rclone.conf"
+
+# Copie o rclone.conf para o local correto
+mkdir -p /opt/micromamba/envs/comfyui/.config/rclone
+cp /caminho/para/seu/rclone.conf $RCLONE_CONFIG_PATH
+
+# Verifique se o rclone está configurado corretamente
+rclone listremotes --config $RCLONE_CONFIG_PATH
+
 
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
