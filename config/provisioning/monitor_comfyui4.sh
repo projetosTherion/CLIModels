@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Instalação e configuração do rclone
+micromamba -n comfyui run pip install rclone --upgrade
+
+# Diretório onde o rclone.conf será copiado
+RCLONE_CONFIG_PATH="/opt/micromamba/envs/comfyui/.config/rclone/rclone.conf"
+
+# Copie o rclone.conf para o local correto
+mkdir -p /opt/micromamba/envs/comfyui/.config/rclone
+cp /caminho/para/seu/rclone.conf $RCLONE_CONFIG_PATH
+
+# Verifique se o rclone está configurado corretamente
+rclone listremotes --config $RCLONE_CONFIG_PATH
+
 LOG_FILE="/var/log/supervisor/comfyui.log"
 WORKFLOW_JSON_PATH="StarterV2.json"
 PUBLIC_IPADDR=${PUBLIC_IPADDR}
