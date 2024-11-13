@@ -13,19 +13,28 @@ cp /caminho/para/seu/rclone.conf $RCLONE_CONFIG_PATH
 # Verifique se o rclone está configurado corretamente
 rclone listremotes --config $RCLONE_CONFIG_PATH
 
+# Variáveis de ambiente e outras configurações
 LOG_FILE="/var/log/supervisor/comfyui.log"
 WORKFLOW_JSON_PATH="StarterV2.json"
 PUBLIC_IPADDR=${PUBLIC_IPADDR}
 VAST_TCP_PORT_8188=${VAST_TCP_PORT_8188}
 GOOGLE_DRIVE_FILE_ID="1LmZ1-v6XKwqpwLT-pHqOmHop-rT0xBEX" # start
-#GOOGLE_DRIVE_FILE_ID="13YRrxtRK2kAv1Pg9A7y50i1xEMv6tSKg" # ROB
+#https://drive.google.com/file/d/1LmZ1-v6XKwqpwLT-pHqOmHop-rT0xBEX/view?usp=sharing
 
-# Função para baixar o arquivo JSON do Google Drive
+# Função para baixar o arquivo JSON do Google Drive usando rclone
 function download_workflow_json() {
     local file_id="$1"
     local destination="$2"
-    echo "Baixando o arquivo start.json do Google Drive..."
-    wget --no-check-certificate "https://docs.google.com/uc?export=download&id=${file_id}" -O "${destination}"
+    local remote="gdrive"
+    
+    echo "Baixando o arquivo start.json do Google Drive usando rclone..."
+    rclone copyto "${remote}:${file_id}" "${destination}" --drive-shared-with-me --drive-acknowledge-abuse --config $RCLONE_CONFIG_PATH
+    
+    if [[ $? -ne 0 ]]; then
+        echo "Erro ao baixar o arquivo start.json do Google Drive."
+        exit 1
+    fi
+    echo "Arquivo start.json baixado com sucesso."
 }
 
 # Função para verificar se o ComfyUI está pronto
@@ -83,7 +92,7 @@ done
 
 # Espera adicional para garantir que o ComfyUI esteja pronto
 echo "Aguardando 10 segundos adicionais para garantir que o ComfyUI esteja totalmente inicializado..."
-sleep 20
+sleep 10
 
 # Loop de monitoramento
 while true; do
