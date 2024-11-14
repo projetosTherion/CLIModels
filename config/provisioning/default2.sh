@@ -137,10 +137,16 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-    local gdown_path="/opt/micromamba/envs/comfyui/bin/pip install gdown"
+    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"
     local file_id
     local file_name
     local file_path
+
+    # Verifica se o gdown está instalado; se não, instala automaticamente
+    if [[ ! -f $gdown_path ]]; then
+        echo "gdown não encontrado. Instalando gdown..."
+        /opt/micromamba/envs/comfyui/bin/pip install gdown || { echo "Falha ao instalar o gdown"; return 1; }
+    fi
 
     if [[ $1 == *"drive.google.com"* ]]; then
         file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
