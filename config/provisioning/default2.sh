@@ -23,7 +23,7 @@ NODES=(
 
 CHECKPOINT_MODELS=(
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    #"https://drive.google.com/uc?id=1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"
+    "https://drive.google.com/uc?id=1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"
     "https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #novo
 )
 
@@ -147,7 +147,7 @@ function provisioning_download() {
 
         declare -A file_map=(
             ["19TTVhBNwkCXa7Emoo_lW3TIJ1P3I2Ybp"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
-           # ["1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"]="Arcseed_V0.2.safetensors"
+            ["1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"]="Arcseed_V0.2.safetensors"
             ["13N0zrQjuOzo6TEKTHtASqm11GhDWOEMQ"]="LoraModelDepth.safetensors"
             ["18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"]="LoraModelCanny.safetensors"
             ["1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"]="swift_srgan_2x.pth"
