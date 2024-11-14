@@ -2,10 +2,10 @@
 #!/bin/bash
 
 LOG_FILE="/var/log/supervisor/comfyui.log"
-WORKFLOW_JSON_PATH="start.json"
+WORKFLOW_JSON_PATH="StarterV2.json"
 PUBLIC_IPADDR=${PUBLIC_IPADDR}
 VAST_TCP_PORT_8188=${VAST_TCP_PORT_8188}
-GOOGLE_DRIVE_FILE_ID="1Rs7Q6BcAeFcwjk5bLUCurAKVcJg8Cid4" # start
+GOOGLE_DRIVE_FILE_ID="1LmZ1-v6XKwqpwLT-pHqOmHop-rT0xBEX" # start
 
 
 # Função para baixar o arquivo JSON do Google Drive
