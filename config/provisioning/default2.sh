@@ -153,13 +153,29 @@ function provisioning_download() {
     # Caso a URL seja do Google Drive, converte para o formato correto
     if [[ "$1" =~ ^https://drive.google.com ]]; then
         echo "Ajustando URL do Google Drive para o formato de download direto..."
+
+        # Extrai o ID do arquivo do Google Drive
         local file_id=$(echo "$1" | sed 's/.*id=\([^&]*\).*/\1/')
+
+        # Configura a URL para o download direto
         local download_url="https://drive.google.com/uc?export=download&id=${file_id}"
-        wget -q --show-progress --https-only --timestamping -P "$2" "$download_url"
+
+        # Baixa o arquivo, lidando com a confirmação de download
+        wget --no-check-certificate --quiet --show-progress --https-only --timestamping \
+            --content-disposition -O "$file_path" "$download_url"
+        
+        # Se o arquivo de confirmação do Google Drive for necessário, é necessário outro passo:
+        if [[ ! -f "$file_path" ]]; then
+            echo "Tentando novamente, porque o Google Drive precisa de confirmação do download..."
+            wget --no-check-certificate --quiet --show-progress --https-only --timestamping \
+                --content-disposition -O "$file_path" "$download_url&confirm=t"
+        fi
     else
+        # Para outras URLs, apenas faz o download diretamente
         wget -q --show-progress --https-only --timestamping -P "$2" "$1"
     fi
 }
+
 
 # Baixar e configurar o script monitor_comfyui.sh
 function download_monitor_script() {
