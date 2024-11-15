@@ -65,7 +65,7 @@ IPADAPTER_MODELS=(
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
 function provisioning_start() {
-    DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
+      DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
     DISK_GB_USED=$(($(df --output=used -m "${WORKSPACE}" | tail -n1) / 1000))
     DISK_GB_ALLOCATED=$(($DISK_GB_AVAILABLE + $DISK_GB_USED))
     provisioning_print_header
@@ -104,7 +104,7 @@ function provisioning_get_nodes() {
 }
 
 function provisioning_install_python_packages() {
-    micromamba -n comfyui run pip install gdown --upgrade
+    micromamba -n comfyui run pip install wget --upgrade
     [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
 }
 
@@ -138,56 +138,26 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"
-    local file_id
     local file_name
     local file_path
 
-    # Verifica se o gdown está instalado; se não, instala automaticamente
-    if [[ ! -f $gdown_path ]]; then
-        echo "gdown não encontrado. Instalando gdown..."
-        /opt/micromamba/envs/comfyui/bin/pip install gdown || { echo "Falha ao instalar o gdown"; return 1; }
+    # Verifica se o wget está instalado; se não, instala automaticamente
+    if ! command -v wget &> /dev/null; then
+        echo "wget não encontrado. Instalando wget..."
+        micromamba -n comfyui run ${PIP_INSTALL} wget
     fi
 
-    if [[ $1 == *"drive.google.com"* ]]; then
-        file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
+    file_name="${1##*/}"
+    file_path="$2/$file_name"
 
-        declare -A file_map=(
-            ["19TTVhBNwkCXa7Emoo_lW3TIJ1P3I2Ybp"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
-            ["1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"]="Arcseed_V0.2.safetensors"
-            ["13N0zrQjuOzo6TEKTHtASqm11GhDWOEMQ"]="LoraModelDepth.safetensors"
-            #["18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"]="LoraModelCanny.safetensors"
-            ["1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"]="swift_srgan_2x.pth"
-            ["1NbNcy3CXzDeHOLKGPTD2C4htjYzCv8TA"]="clipvis_ViT-H_1.5_.safetensors"
-           # ["1uO4xV1JAh3BLv1lwaliCBTKZgliUPZ3c"]="ip-adapter-plus_sdxl_vit-h.bin"
-
-           https://drive.google.com/file/d/121idUQS79HKNlQKrk4hePTIYVLonP1P2/view?usp=sharing
-
-            #novos
-            ["121idUQS79HKNlQKrk4hePTIYVLonP1P2"]="LoraModelScribble.safetensors"
-            ["1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq"]="Arcseed_1.5.V0.3.safetensors"
-            ["1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq"]="ip-adapter-plus_sdxl_vit-h.bin"
-            ["1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"]="controlnet11Models_scribble.safetensors"
-            ["1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"]="controlnet11Models_scribble.yaml"
-            ["1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"]="controlnet11Models_depht.safetensors"
-            ["1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"]="controlnet11Models_depht.yaml"
-        )
-
-        file_name="${file_map[$file_id]}"
-        file_path="$2/$file_name"
-
-        [[ ! -d $2 ]] && mkdir -p "$2"
-
-        echo "Downloading $file_name from Google Drive to $file_path"
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" || echo "Erro ao baixar o arquivo $file_name"
+    # Caso a URL seja do Google Drive, converte para o formato correto
+    if [[ "$1" =~ ^https://drive.google.com ]]; then
+        echo "Ajustando URL do Google Drive para o formato de download direto..."
+        local file_id=$(echo "$1" | sed 's/.*id=\([^&]*\).*/\1/')
+        local download_url="https://drive.google.com/uc?export=download&id=${file_id}"
+        wget -q --show-progress --https-only --timestamping -P "$2" "$download_url"
     else
-        file_name=$(basename "$1")
-        file_path="$2/$file_name"
-
-        [[ ! -d $2 ]] && mkdir -p "$2"
-
-        echo "Downloading $file_name to $file_path"
-        wget -O "$file_path" "$1" || echo "Erro ao baixar o arquivo $file_name"
+        wget -q --show-progress --https-only --timestamping -P "$2" "$1"
     fi
 }
 
