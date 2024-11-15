@@ -5,7 +5,6 @@
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
     "huggingface_hub==0.14.1"
-    # "opencv-python==4.7.0.72"
 )
 
 NODES=(
@@ -22,7 +21,6 @@ NODES=(
 
 
 CHECKPOINT_MODELS=(
-    #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     "https://drive.google.com/uc?id=1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"
     "https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #novo
 )
@@ -36,14 +34,13 @@ VAE_MODELS=(
 )
 
 ESRGAN_MODELS=(
-    #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
+
     "https://drive.google.com/uc?id=1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"
 )
 
 CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=19TTVhBNwkCXa7Emoo_lW3TIJ1P3I2Ybp"
     "https://drive.google.com/uc?id=13N0zrQjuOzo6TEKTHtASqm11GhDWOEMQ"
-    #"https://drive.google.com/uc?id=18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"
 
     #novos
     "https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"
@@ -156,12 +153,8 @@ function provisioning_download() {
             ["19TTVhBNwkCXa7Emoo_lW3TIJ1P3I2Ybp"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
             ["1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"]="Arcseed_V0.2.safetensors"
             ["13N0zrQjuOzo6TEKTHtASqm11GhDWOEMQ"]="LoraModelDepth.safetensors"
-            #["18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"]="LoraModelCanny.safetensors"
             ["1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"]="swift_srgan_2x.pth"
             ["1NbNcy3CXzDeHOLKGPTD2C4htjYzCv8TA"]="clipvis_ViT-H_1.5_.safetensors"
-           # ["1uO4xV1JAh3BLv1lwaliCBTKZgliUPZ3c"]="ip-adapter-plus_sdxl_vit-h.bin"
-
-           https://drive.google.com/file/d/121idUQS79HKNlQKrk4hePTIYVLonP1P2/view?usp=sharing
 
             #novos
             ["121idUQS79HKNlQKrk4hePTIYVLonP1P2"]="LoraModelScribble.safetensors"
