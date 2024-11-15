@@ -168,7 +168,7 @@ function provisioning_download() {
         [[ ! -d $2 ]] && mkdir -p "$2"
 
         echo "Downloading $file_name from Google Drive to $file_path"
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" || echo "Erro ao baixar o arquivo $file_name"
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies || echo "Erro ao baixar o arquivo $file_name"
     else
         file_name=$(basename "$1")
         file_path="$2/$file_name"
