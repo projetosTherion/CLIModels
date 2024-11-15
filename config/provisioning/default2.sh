@@ -140,7 +140,10 @@ function provisioning_download() {
     local file_name
     local file_path
 
-    # Verifica se o gdown está instalado; se não, instala automaticamente
+    # Configurar diretório de cache para evitar erros
+    export GDOWN_CACHE="/tmp/gdown_cache"
+    mkdir -p $GDOWN_CACHE
+
     if [[ ! -f $gdown_path ]]; then
         echo "gdown não encontrado. Instalando gdown..."
         /opt/micromamba/envs/comfyui/bin/pip install gdown || { echo "Falha ao instalar o gdown"; return 1; }
@@ -172,7 +175,7 @@ function provisioning_download() {
         [[ ! -d $2 ]] && mkdir -p "$2"
 
         echo "Downloading $file_name from Google Drive to $file_path"
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" || echo "Erro ao baixar o arquivo $file_name"
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies || echo "Erro ao baixar o arquivo $file_name"
     else
         file_name=$(basename "$1")
         file_path="$2/$file_name"
