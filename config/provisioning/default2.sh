@@ -101,8 +101,29 @@ function provisioning_get_nodes() {
 }
 
 function provisioning_install_python_packages() {
-    micromamba -n comfyui run pip install gdown --upgrade
-    [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
+    # Verifica se o ambiente comfyui existe
+    if ! micromamba env list | grep -q "comfyui"; then
+        echo "O ambiente 'comfyui' não existe. Por favor, crie-o antes de executar esta função."
+        exit 1
+    fi
+
+    # Instala gdown
+    echo "Instalando gdown..."
+    micromamba -n comfyui run pip install gdown --upgrade || {
+        echo "Falha ao instalar gdown"
+        exit 1
+    }
+
+    # Instala pacotes adicionais
+    if [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]]; then
+        echo "Instalando pacotes adicionais: ${PYTHON_PACKAGES[*]}"
+        micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]} || {
+            echo "Falha ao instalar pacotes adicionais."
+            exit 1
+        }
+    else
+        echo "Nenhum pacote adicional para instalar."
+    fi
 }
 
 function provisioning_get_models() {
