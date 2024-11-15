@@ -5,6 +5,7 @@
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
     "huggingface_hub==0.14.1"
+    # "opencv-python==4.7.0.72"
 )
 
 NODES=(
@@ -21,6 +22,7 @@ NODES=(
 
 
 CHECKPOINT_MODELS=(
+    #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     "https://drive.google.com/uc?id=1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"
     "https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #novo
 )
@@ -34,13 +36,14 @@ VAE_MODELS=(
 )
 
 ESRGAN_MODELS=(
-
+    #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
     "https://drive.google.com/uc?id=1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"
 )
 
 CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=19TTVhBNwkCXa7Emoo_lW3TIJ1P3I2Ybp"
     "https://drive.google.com/uc?id=13N0zrQjuOzo6TEKTHtASqm11GhDWOEMQ"
+    #"https://drive.google.com/uc?id=18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"
 
     #novos
     "https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"
@@ -101,33 +104,8 @@ function provisioning_get_nodes() {
 }
 
 function provisioning_install_python_packages() {
-    # Verifica se o ambiente comfyui existe
-    if ! micromamba env list | grep -q "comfyui"; then
-        echo "O ambiente 'comfyui' não existe. Por favor, crie-o antes de executar esta função."
-        exit 1
-    fi
-
-    # Instala gdown
-    echo "Instalando gdown..."
-    micromamba -n comfyui run pip install matplotlib
-
-    micromamba -n comfyui run pip install -r /workspace/ComfyUI/custom_nodes/TherionControl/requirements.txt
-
-    micromamba -n comfyui run pip install gdown --upgrade || {
-        echo "Falha ao instalar gdown"
-        exit 1
-    }
-
-    # Instala pacotes adicionais
-    if [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]]; then
-        echo "Instalando pacotes adicionais: ${PYTHON_PACKAGES[*]}"
-        micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]} || {
-            echo "Falha ao instalar pacotes adicionais."
-            exit 1
-        }
-    else
-        echo "Nenhum pacote adicional para instalar."
-    fi
+    micromamba -n comfyui run pip install gdown --upgrade
+    [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
 }
 
 function provisioning_get_models() {
@@ -165,10 +143,7 @@ function provisioning_download() {
     local file_name
     local file_path
 
-    # Configurar diretório de cache para evitar erros
-    export GDOWN_CACHE="/tmp/gdown_cache"
-    mkdir -p $GDOWN_CACHE
-
+    # Verifica se o gdown está instalado; se não, instala automaticamente
     if [[ ! -f $gdown_path ]]; then
         echo "gdown não encontrado. Instalando gdown..."
         /opt/micromamba/envs/comfyui/bin/pip install gdown || { echo "Falha ao instalar o gdown"; return 1; }
@@ -181,8 +156,12 @@ function provisioning_download() {
             ["19TTVhBNwkCXa7Emoo_lW3TIJ1P3I2Ybp"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
             ["1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"]="Arcseed_V0.2.safetensors"
             ["13N0zrQjuOzo6TEKTHtASqm11GhDWOEMQ"]="LoraModelDepth.safetensors"
+            #["18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"]="LoraModelCanny.safetensors"
             ["1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"]="swift_srgan_2x.pth"
             ["1NbNcy3CXzDeHOLKGPTD2C4htjYzCv8TA"]="clipvis_ViT-H_1.5_.safetensors"
+           # ["1uO4xV1JAh3BLv1lwaliCBTKZgliUPZ3c"]="ip-adapter-plus_sdxl_vit-h.bin"
+
+           https://drive.google.com/file/d/121idUQS79HKNlQKrk4hePTIYVLonP1P2/view?usp=sharing
 
             #novos
             ["121idUQS79HKNlQKrk4hePTIYVLonP1P2"]="LoraModelScribble.safetensors"
@@ -200,7 +179,7 @@ function provisioning_download() {
         [[ ! -d $2 ]] && mkdir -p "$2"
 
         echo "Downloading $file_name from Google Drive to $file_path"
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies || echo "Erro ao baixar o arquivo $file_name"
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" || echo "Erro ao baixar o arquivo $file_name"
     else
         file_name=$(basename "$1")
         file_path="$2/$file_name"
