@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 LOG_FILE="/var/log/supervisor/comfyui.log"
@@ -21,13 +20,13 @@ function is_comfyui_ready() {
     tail -n 500 "$LOG_FILE" | grep -q "Prestartup times for custom nodes:"
 }
 
-# Função para verificar se o ComfyUI está em execução
+# Função para verificar se o ComfyUI está em execução usando wget
 check_comfyui() {
-    curl -s --head http://${PUBLIC_IPADDR}:${VAST_TCP_PORT_8188} | head -n 1 | grep "HTTP/1.[01] [23].." > /dev/null
+    wget --spider -q "http://${PUBLIC_IPADDR}:${VAST_TCP_PORT_8188}" 
     return $?
 }
 
-# Função para enviar o payload JSON
+# Função para enviar o payload JSON (mantém o curl, pois wget não é ideal para POST)
 function send_payload() {
     local comfyui_url="http://${PUBLIC_IPADDR}:${VAST_TCP_PORT_8188}/prompt"
     local bearer_token="90d93ff52261c93690d6aad0a7a06c8da939ae2a5a39458349e6fc29ec3b61c0"
