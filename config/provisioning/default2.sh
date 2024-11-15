@@ -109,6 +109,10 @@ function provisioning_install_python_packages() {
 
     # Instala gdown
     echo "Instalando gdown..."
+    micromamba -n comfyui run pip install matplotlib
+
+    micromamba -n comfyui run pip install -r /workspace/ComfyUI/custom_nodes/TherionControl/requirements.txt
+
     micromamba -n comfyui run pip install gdown --upgrade || {
         echo "Falha ao instalar gdown"
         exit 1
