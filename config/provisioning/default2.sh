@@ -163,18 +163,20 @@ function provisioning_download() {
         # Baixa o arquivo, lidando com a confirmação de download
         wget --no-check-certificate --quiet --show-progress --https-only --timestamping \
             --content-disposition -O "$file_path" "$download_url"
-        
-        # Se o arquivo de confirmação do Google Drive for necessário, é necessário outro passo:
+
+        # Verifica se o arquivo foi baixado corretamente
         if [[ ! -f "$file_path" ]]; then
             echo "Tentando novamente, porque o Google Drive precisa de confirmação do download..."
+            # Tenta com o parâmetro de confirmação adicional do Google Drive
             wget --no-check-certificate --quiet --show-progress --https-only --timestamping \
-                --content-disposition -O "$file_path" "$download_url&confirm=t"
+                --content-disposition -O "$file_path" "${download_url}&confirm=t"
         fi
     else
         # Para outras URLs, apenas faz o download diretamente
         wget -q --show-progress --https-only --timestamping -P "$2" "$1"
     fi
 }
+
 
 
 # Baixar e configurar o script monitor_comfyui.sh
