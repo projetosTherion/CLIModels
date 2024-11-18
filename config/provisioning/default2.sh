@@ -171,7 +171,9 @@ function provisioning_download() {
         $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies || echo "Erro ao baixar o arquivo $file_name"
     else
         file_name=$(basename "$1")
-        file_path="$2/$file_name"
+        
+        # Corrigir o problema da barra dupla '//' no diretório
+        file_path="${2%/}/${file_name}"
 
         [[ ! -d $2 ]] && mkdir -p "$2"
 
