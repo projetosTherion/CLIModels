@@ -2,6 +2,16 @@
 
 # Este arquivo será chamado em init.sh
 
+APT_PACKAGES=(
+    #"package-1"
+    #"package-2"
+)
+
+PIP_PACKAGES=(
+    #"package-1"
+    #"package-2"
+)
+
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
     #"transformers==4.32.0"
