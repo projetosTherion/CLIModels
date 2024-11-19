@@ -85,26 +85,26 @@ function provisioning_get_nodes() {
         dir="${repo##*/}"
         path="/opt/ComfyUI/custom_nodes/${dir}"
         requirements="${path}/requirements.txt"
+
         if [[ -d $path ]]; then
             if [[ ${AUTO_UPDATE,,} != "false" ]]; then
                 printf "Updating node: %s...\n" "${repo}"
                 (cd "$path" && git pull)
-                [[ -e $requirements ]] && micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
+                [[ -e $requirements ]] && pip install -r "$requirements"
             fi
         else
             printf "Downloading node: %s...\n" "${repo}"
             git clone "${repo}" "${path}" --recursive || { echo "Erro ao clonar o repositório: ${repo}"; continue; }
-            [[ -e $requirements ]] && micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
+            [[ -e $requirements ]] && pip install -r "$requirements"
         fi
 
-        # Verifique as dependências manualmente para repos específicos
-        [[ "$dir" == "TherionIPAdapter" ]] && micromamba -n comfyui run pip install numpy opencv-python torch
+        [[ "$dir" == "TherionIPAdapter" ]] && pip install numpy opencv-python torch
     done
 }
 
 function provisioning_install_python_packages() {
-     micromamba -n comfyui run pip install gdown --upgrade
-    [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
+    pip install gdown --upgrade
+    [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && pip install "${PYTHON_PACKAGES[@]}"
 }
 
 function provisioning_get_models() {
