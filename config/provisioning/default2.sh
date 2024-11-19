@@ -64,11 +64,16 @@ IPADAPTER_MODELS=(
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
 function provisioning_start() {
-    DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
-    DISK_GB_USED=$(($(df --output=used -m "${WORKSPACE}" | tail -n1) / 1000))
-    DISK_GB_ALLOCATED=$(($DISK_GB_AVAILABLE + $DISK_GB_USED))
+     if [[ ! -d /opt/environments/python ]]; then 
+        export MAMBA_BASE=true
+    fi
+    source /opt/ai-dock/etc/environment.sh
+    source /opt/ai-dock/bin/venv-set.sh comfyui
+
     provisioning_print_header
+    provisioning_get_apt_packages
     provisioning_get_nodes
+    provisioning_get_pip_packages
     provisioning_install_python_packages
     provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ckpt" "${CHECKPOINT_MODELS[@]}"
     provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/lora" "${LORA_MODELS[@]}"
@@ -80,27 +85,50 @@ function provisioning_start() {
     provisioning_print_end
 }
 
+function pip_install() {
+    if [[ -z $MAMBA_BASE ]]; then
+            "$COMFYUI_VENV_PIP" install --no-cache-dir "$@"
+        else
+            micromamba run -n comfyui pip install --no-cache-dir "$@"
+        fi
+}
+
+function provisioning_get_apt_packages() {
+    if [[ -n $APT_PACKAGES ]]; then
+            sudo $APT_INSTALL ${APT_PACKAGES[@]}
+    fi
+}
+
+function provisioning_get_pip_packages() {
+    if [[ -n $PIP_PACKAGES ]]; then
+            pip_install ${PIP_PACKAGES[@]}
+    fi
+}
+
+
 function provisioning_get_nodes() {
     for repo in "${NODES[@]}"; do
         dir="${repo##*/}"
         path="/opt/ComfyUI/custom_nodes/${dir}"
         requirements="${path}/requirements.txt"
-
         if [[ -d $path ]]; then
             if [[ ${AUTO_UPDATE,,} != "false" ]]; then
                 printf "Updating node: %s...\n" "${repo}"
-                (cd "$path" && git pull)
-                [[ -e $requirements ]] && pip install -r "$requirements"
+                ( cd "$path" && git pull )
+                if [[ -e $requirements ]]; then
+                   pip_install -r "$requirements"
+                fi
             fi
         else
             printf "Downloading node: %s...\n" "${repo}"
-            git clone "${repo}" "${path}" --recursive || { echo "Erro ao clonar o repositório: ${repo}"; continue; }
-            [[ -e $requirements ]] && pip install -r "$requirements"
+            git clone "${repo}" "${path}" --recursive
+            if [[ -e $requirements ]]; then
+                pip_install -r "${requirements}"
+            fi
         fi
-
-        [[ "$dir" == "TherionIPAdapter" ]] && pip install numpy opencv-python torch
     done
 }
+
 
 function provisioning_install_python_packages() {
     pip install gdown --upgrade
@@ -108,18 +136,14 @@ function provisioning_install_python_packages() {
 }
 
 function provisioning_get_models() {
-    local dir="$1"
-    shift
+    if [[ -z $2 ]]; then return 1; fi
+    
+    dir="$1"
     mkdir -p "$dir"
-    local models=("$@")
-
-    if [[ $DISK_GB_ALLOCATED -lt $DISK_GB_REQUIRED ]]; then
-        printf "WARNING: Low disk space allocation - Only the first model will be downloaded!\n"
-        models=("${models[0]}")
-    fi
-
-    printf "Downloading %s model(s) to %s...\n" "${#models[@]}" "$dir"
-    for url in "${models[@]}"; do
+    shift
+    arr=("$@")
+    printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
+    for url in "${arr[@]}"; do
         printf "Downloading: %s\n" "${url}"
         provisioning_download "${url}" "${dir}"
         printf "\n"
