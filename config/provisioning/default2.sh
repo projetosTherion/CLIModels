@@ -102,8 +102,16 @@ function provisioning_get_nodes() {
     done
 }
 
+function pip_install() {
+    if [[ -z $MAMBA_BASE ]]; then
+        "$COMFYUI_VENV_PIP" install --no-cache-dir "$@"
+    else
+        micromamba run -n comfyui pip install --no-cache-dir "$@"
+    fi
+}
+
 function provisioning_install_python_packages() {
-    micromamba install -n comfyui -c conda-forge gdown
+     micromamba -n comfyui run pip install gdown --upgrade
     [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
 }
 
@@ -176,8 +184,9 @@ function provisioning_download() {
             $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies \
                 || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
         else
-            echo "Erro: gdown não encontrado em $gdown_path"
-            return 1
+            echo "Erro: gdown não encontrado em $gdown_path. Tentando com pip."
+            gdown "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies \
+                || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
         fi
 
     else
@@ -187,12 +196,10 @@ function provisioning_download() {
 
         echo "Baixando $file_name para $file_path"
 
-        # Verificar se o wget está disponível
         if command -v wget &> /dev/null; then
-            wget -O "$file_path" "$url" \
-                || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
+            wget -O "$file_path" "$url" || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
         else
-            echo "Erro: wget não encontrado. Instale-o e tente novamente."
+            echo "Erro: wget não está instalado ou não foi encontrado"
             return 1
         fi
     fi
