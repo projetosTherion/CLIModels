@@ -137,7 +137,7 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"
+    local gdown_path="/opt/environments/python/comfyui/bin/gdown"
     local url="$1"
     local dest_dir="$2"
     local file_id=""
