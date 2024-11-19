@@ -111,7 +111,7 @@ function pip_install() {
 }
 
 function provisioning_install_python_packages() {
-     micromamba -n comfyui run pip install gdown --upgrade
+     micromamba -n comfyui run pip install gdown --user
     [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
 }
 
