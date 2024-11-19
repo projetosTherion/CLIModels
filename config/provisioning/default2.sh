@@ -102,16 +102,8 @@ function provisioning_get_nodes() {
     done
 }
 
-function pip_install() {
-    if [[ -z $MAMBA_BASE ]]; then
-        "$COMFYUI_VENV_PIP" install --no-cache-dir "$@"
-    else
-        micromamba run -n comfyui pip install --no-cache-dir "$@"
-    fi
-}
-
 function provisioning_install_python_packages() {
-     micromamba -n comfyui run pip install gdown --user
+     micromamba -n comfyui run pip install gdown --upgrade
     [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
 }
 
@@ -174,34 +166,21 @@ function provisioning_download() {
             ["1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"]="controlnet11Models_depht.yaml"
         )
 
-        file_name="${file_map[$file_id]:-"unknown_file_$file_id"}"
-        file_path="${dest_dir%/}/${file_name}"
+        file_name="${file_map[$file_id]}"
+        file_path="$2/$file_name"
 
-        echo "Baixando $file_name de Google Drive para $file_path"
+        [[ ! -d $2 ]] && mkdir -p "$2"
 
-        # Verificar se o gdown está disponível
-        if [[ -x $gdown_path ]]; then
-            $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies \
-                || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
-        else
-            echo "Erro: gdown não encontrado em $gdown_path. Tentando com pip."
-            gdown "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies \
-                || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
-        fi
-
+        echo "Downloading $file_name from Google Drive to $file_path"
+        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" || echo "Erro ao baixar o arquivo $file_name"
     else
-        # Para URLs comuns, usar wget
-        file_name=$(basename "$url")
-        file_path="${dest_dir%/}/${file_name}"
+        file_name=$(basename "$1")
+        file_path="$2/$file_name"
 
-        echo "Baixando $file_name para $file_path"
+        [[ ! -d $2 ]] && mkdir -p "$2"
 
-        if command -v wget &> /dev/null; then
-            wget -O "$file_path" "$url" || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
-        else
-            echo "Erro: wget não está instalado ou não foi encontrado"
-            return 1
-        fi
+        echo "Downloading $file_name to $file_path"
+        wget -O "$file_path" "$1" || echo "Erro ao baixar o arquivo $file_name"
     fi
 }
 
