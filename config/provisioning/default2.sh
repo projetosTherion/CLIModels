@@ -138,22 +138,26 @@ function provisioning_print_end() {
 # Download from $1 URL to $2 file path
 function provisioning_download() {
     local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"
-    local file_id
-    local file_name
-    local file_path
+    local url="$1"
+    local dest_dir="$2"
+    local file_id=""
+    local file_name=""
+    local file_path=""
 
-    if [[ $1 == *"drive.google.com"* ]]; then
-        file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
+    # Verificar se o destino existe; criar se necessário
+    [[ ! -d $dest_dir ]] && mkdir -p "$dest_dir"
 
+    if [[ $url == *"drive.google.com"* ]]; then
+        # Extraindo o ID do arquivo do Google Drive
+        file_id=$(echo "$url" | grep -oP '(?<=id=)[^&]+' | head -1)
+
+        # Mapeando o nome do arquivo pelo ID (opcional)
         declare -A file_map=(
             ["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
             ["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
             ["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
-            #["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="LoraModelCanny.safetensors"
             ["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
             ["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
-            #["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
-            #novos
             ["1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq"]="Arcseed_1.5.V0.3.safetensors"
             ["1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq"]="ip-adapter-plus_sdxl_vit-h.bin"
             ["1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"]="controlnet11Models_scribble.safetensors"
@@ -162,25 +166,38 @@ function provisioning_download() {
             ["1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"]="controlnet11Models_depht.yaml"
         )
 
-        file_name="${file_map[$file_id]}"
-        file_path="$2/$file_name"
+        file_name="${file_map[$file_id]:-"unknown_file_$file_id"}"
+        file_path="${dest_dir%/}/${file_name}"
 
-        [[ ! -d $2 ]] && mkdir -p "$2"
+        echo "Baixando $file_name de Google Drive para $file_path"
 
-        echo "Downloading $file_name from Google Drive to $file_path"
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies || echo "Erro ao baixar o arquivo $file_name"
+        # Verificar se o gdown está disponível
+        if [[ -x $gdown_path ]]; then
+            $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" --no-cookies \
+                || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
+        else
+            echo "Erro: gdown não encontrado em $gdown_path"
+            return 1
+        fi
+
     else
-        file_name=$(basename "$1")
-        
-        # Corrigir o problema da barra dupla '//' no diretório
-        file_path="${2%/}/${file_name}"
+        # Para URLs comuns, usar wget
+        file_name=$(basename "$url")
+        file_path="${dest_dir%/}/${file_name}"
 
-        [[ ! -d $2 ]] && mkdir -p "$2"
+        echo "Baixando $file_name para $file_path"
 
-        echo "Downloading $file_name to $file_path"
-        wget -O "$file_path" "$1" || echo "Erro ao baixar o arquivo $file_name"
+        # Verificar se o wget está disponível
+        if command -v wget &> /dev/null; then
+            wget -O "$file_path" "$url" \
+                || { echo "Erro ao baixar o arquivo $file_name"; return 1; }
+        else
+            echo "Erro: wget não encontrado. Instale-o e tente novamente."
+            return 1
+        fi
     fi
 }
+
 
 # Baixar e configurar o script monitor_comfyui.sh
 function download_monitor_script() {
