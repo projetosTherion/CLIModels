@@ -1,25 +1,12 @@
 #!/bin/bash
 
-# Este arquivo será chamado em init.sh
-
-# Instalação e configuração do rclone
-micromamba -n comfyui run pip install rclone --upgrade
-
-# Diretório onde o rclone.conf será copiado
-RCLONE_CONFIG_PATH="/opt/micromamba/envs/comfyui/.config/rclone/rclone.conf"
-
-# Copie o rclone.conf para o local correto
-mkdir -p /opt/micromamba/envs/comfyui/.config/rclone
-cp /caminho/para/seu/rclone.conf $RCLONE_CONFIG_PATH
-
-# Verifique se o rclone está configurado corretamente
-rclone listremotes --config $RCLONE_CONFIG_PATH
-
+# Python packages to install
 PYTHON_PACKAGES=(
     "diffusers==0.28.0"
-    # "opencv-python==4.7.0.72"
+    "huggingface_hub==0.14.1"
 )
 
+# Node repositories to clone/update
 NODES=(
     "https://github.com/projetosTherion/TherionManager"
     "https://github.com/projetosTherion/TherionEasy"
@@ -32,170 +19,87 @@ NODES=(
     "https://github.com/projetosTherion/TherionInspire"
 )
 
+# Models to download
 CHECKPOINT_MODELS=(
-    #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    "https://drive.google.com/uc?id=1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"
-)
-
-LORA_MODELS=(
-    #"https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
-)
-
-VAE_MODELS=(
-    #"https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
-)
-
-ESRGAN_MODELS=(
-    #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
-    "https://drive.google.com/uc?id=1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"
+    "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"
+    "https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq"
 )
 
 CONTROLNET_MODELS=(
-    "https://drive.google.com/uc?id=19TTVhBNwkCXa7Emoo_lW3TIJ1P3I2Ybp"
-    "https://drive.google.com/uc?id=13N0zrQjuOzo6TEKTHtASqm11GhDWOEMQ"
-    "https://drive.google.com/uc?id=18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"
+    "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
+    "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
 )
 
-CLIPVISION_MODELS=(
-    "https://drive.google.com/uc?id=1NbNcy3CXzDeHOLKGPTD2C4htjYzCv8TA"
-)
+# Function to install Python dependencies
+function install_dependencies() {
+    echo "Installing dependencies from requirements.txt..."
+    if [[ -f "requirements.txt" ]]; then
+        micromamba -n comfyui run pip install -r requirements.txt
+    fi
 
-IPADAPTER_MODELS=(
-    "https://drive.google.com/uc?id=1uO4xV1JAh3BLv1lwaliCBTKZgliUPZ3c"
-)
-
-### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
-
-function provisioning_start() {
-    DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
-    DISK_GB_USED=$(($(df --output=used -m "${WORKSPACE}" | tail -n1) / 1000))
-    DISK_GB_ALLOCATED=$(($DISK_GB_AVAILABLE + $DISK_GB_USED))
-    provisioning_print_header
-    provisioning_get_nodes
-    provisioning_install_python_packages
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ckpt" "${CHECKPOINT_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/lora" "${LORA_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/controlnet" "${CONTROLNET_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/vae" "${VAE_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/esrgan" "${ESRGAN_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/clip_vision" "${CLIPVISION_MODELS[@]}"
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ipadapter" "${IPADAPTER_MODELS[@]}"
-    provisioning_print_end
+    echo "Installing additional Python packages..."
+    micromamba -n comfyui run pip install "${PYTHON_PACKAGES[@]}"
 }
 
-function provisioning_get_nodes() {
+# Function to download files
+function download_file() {
+    local url=$1
+    local dest_dir=$2
+    local file_name=$3
+
+    [[ ! -d $dest_dir ]] && mkdir -p "$dest_dir"
+
+    if [[ $url == "drive.google.com" ]]; then
+        local file_id=$(echo "$url" | grep -oP '(?<=id=)[^&]+')
+        echo "Downloading from Google Drive: $file_name"
+        wget --no-check-certificate "https://drive.google.com/uc?export=download&id=$file_id" -O "$dest_dir/$file_name"
+    else
+        echo "Downloading from URL: $file_name"
+        wget -O "$dest_dir/$file_name" "$url"
+    fi
+}
+
+# Function to clone or update node repositories
+function get_nodes() {
+    local base_dir="/opt/ComfyUI/custom_nodes"
     for repo in "${NODES[@]}"; do
-        dir="${repo##*/}"
-        path="/opt/ComfyUI/custom_nodes/${dir}"
-        requirements="${path}/requirements.txt"
-        if [[ -d $path ]]; then
-            if [[ ${AUTO_UPDATE,,} != "false" ]]; then
-                printf "Updating node: %s...\n" "${repo}"
-                (cd "$path" && git pull)
-                [[ -e $requirements ]] && micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
-            fi
+        local dir_name=$(basename "$repo")
+        local dir_path="$base_dir/$dir_name"
+        if [[ -d $dir_path ]]; then
+            echo "Updating node: $dir_name"
+            (cd "$dir_path" && git pull)
         else
-            printf "Downloading node: %s...\n" "${repo}"
-            git clone "${repo}" "${path}" --recursive || { echo "Erro ao clonar o repositório: ${repo}"; continue; }
-            [[ -e $requirements ]] && micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
+            echo "Cloning node: $dir_name"
+            git clone "$repo" "$dir_path"
         fi
-
-        # Verifique as dependências manualmente para repos específicos
-        [[ "$dir" == "TherionIPAdapter" ]] && micromamba -n comfyui run pip install numpy opencv-python torch
     done
 }
 
-function provisioning_install_python_packages() {
-    micromamba -n comfyui run pip install rclone --upgrade
-    rclone config create gdrive drive --config $RCLONE_CONFIG_PATH
-    
-    [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && micromamba -n comfyui run ${PIP_INSTALL} ${PYTHON_PACKAGES[*]}
-}
-
-function provisioning_get_models() {
-    local dir="$1"
+# Function to download models
+function get_models() {
+    local dest_dir=$1
     shift
-    mkdir -p "$dir"
-    local models=("$@")
-
-    if [[ $DISK_GB_ALLOCATED -lt $DISK_GB_REQUIRED ]]; then
-        printf "WARNING: Low disk space allocation - Only the first model will be downloaded!\n"
-        models=("${models[0]}")
-    fi
-
-    printf "Downloading %s model(s) to %s...\n" "${#models[@]}" "$dir"
-    for url in "${models[@]}"; do
-        printf "Downloading: %s\n" "${url}"
-        provisioning_download "${url}" "${dir}"
-        printf "\n"
+    for model_url in "$@"; do
+        local file_name=$(basename "$model_url" | sed 's/\?.*//')
+        download_file "$model_url" "$dest_dir" "$file_name"
     done
 }
 
-function provisioning_print_header() {
-    printf "\n##############################################\n#                                            #\n#          Provisioning container            #\n#                                            #\n#         This will take some time           #\n#                                            #\n# Your container will be ready on completion #\n#                                            #\n##############################################\n\n"
-    [[ $DISK_GB_ALLOCATED -lt $DISK_GB_REQUIRED ]] && printf "WARNING: Your allocated disk size (%sGB) is below the recommended %sGB - Some models will not be downloaded\n" "$DISK_GB_ALLOCATED" "$DISK_GB_REQUIRED"
+# Main provisioning function
+function provisioning_start() {
+    echo "Starting provisioning..."
+
+    # Step 1: Install dependencies
+    install_dependencies
+
+    # Step 2: Clone or update node repositories
+    get_nodes
+
+    # Step 3: Download models
+    echo "Downloading models..."
+    get_models "/storage/stable_diffusion/models/ckpt" "${CHECKPOINT_MODELS[@]}"
+    get_models "/storage/stable_diffusion/models/controlnet" "${CONTROLNET_MODELS[@]}"
 }
 
-function provisioning_print_end() {
-    printf "\nProvisioning complete: Web UI will start now\n\n"
-}
-
-# Download from $1 URL to $2 file path
-function provisioning_download() {
-    local remote="gdrive"
-    local file_id
-    local file_name
-    local file_path
-
-    if [[ $1 == *"drive.google.com"* ]]; then
-        file_id=$(echo $1 | grep -oP '(?<=id=)[^&]+' | head -1)
-
-        declare -A file_map=(
-            ["19TTVhBNwkCXa7Emoo_lW3TIJ1P3I2Ybp"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
-            ["1fNW8zJYQuEh9uCjhk-H7fvJfyEWoEkPQ"]="Arcseed_V0.2.safetensors"
-            ["13N0zrQjuOzo6TEKTHtASqm11GhDWOEMQ"]="LoraModelDepth.safetensors"
-            ["18E6aLDT0x9zwyjiAhyY1Ww7IJI467ZWv"]="LoraModelCanny.safetensors"
-            ["1I7r_L1JX0g0QVQbj0y0Otjekux4kO1fr"]="swift_srgan_2x.pth"
-            ["1NbNcy3CXzDeHOLKGPTD2C4htjYzCv8TA"]="clipvis_ViT-H_1.5_.safetensors"
-            ["1uO4xV1JAh3BLv1waliCBTKZgliUPZ3c"]="ip-adapter-plus_sdxl_vit-h.bin"
-        )
-
-        file_name="${file_map[$file_id]}"
-        file_path="$2/$file_name"
-
-        [[ ! -d $2 ]] && mkdir -p "$2"
-
-        echo "Downloading $file_name from Google Drive to $file_path"
-        rclone copy "$remote:$file_id" "$file_path" --config $RCLONE_CONFIG_PATH || echo "Erro ao baixar o arquivo $file_name"
-    else
-        file_name=$(basename "$1")
-        file_path="$2/$file_name"
-
-        [[ ! -d $2 ]] && mkdir -p "$2"
-
-        echo "Downloading $file_name to $file_path"
-        wget -O "$file_path" "$1" || echo "Erro ao baixar o arquivo $file_name"
-    fi
-}
-
-
-# Baixar e configurar o script monitor_comfyui.sh
-function download_monitor_script() {
-    local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui3.sh"
-    local destination="/workspace/monitor_comfyui3.sh"
-    
-    echo "Baixando o script monitor_comfyui.sh..."
-    if wget -O "$destination" "$url"; then
-        echo "Script baixado com sucesso."
-        chmod +x "$destination"
-        "$destination" & # Executa o script em segundo plano
-    else
-        echo "Erro ao baixar o script monitor_comfyui.sh."
-        exit 1
-    fi
-}
-
+# Start provisioning
 provisioning_start
-
-# Chame a função para baixar e executar o monitor
-download_monitor_script
