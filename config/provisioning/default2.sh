@@ -99,7 +99,7 @@ function pip_install() {
     if [[ -z $MAMBA_BASE ]]; then
             "$COMFYUI_VENV_PIP" install --no-cache-dir "$@"
         else
-            micromamba run -n comfyui pip install --no-cache-dir "$@"
+            micromamba run -n comfyui pip_install --no-cache-dir "$@"
         fi
 }
 
