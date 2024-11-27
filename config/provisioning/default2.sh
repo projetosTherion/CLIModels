@@ -98,9 +98,8 @@ function provisioning_start() {
 function pip_install() {
     if [[ -z $MAMBA_BASE ]]; then
             "$COMFYUI_VENV_PIP" install --no-cache-dir "$@"
-            micromamba run -n comfyui pip_install --no-cache-dir "$@"
         else
-            micromamba run -n comfyui pip_install --no-cache-dir "$@"
+            micromamba run -n comfyui pip install --no-cache-dir "$@"
         fi
 }
 
@@ -143,8 +142,6 @@ function provisioning_get_nodes() {
 
 function provisioning_install_python_packages() {
     pip_install gdown --upgrade
-    micromamba install -n comfyui gdown --upgrade
-
     [[ ${#PYTHON_PACKAGES[@]} -gt 0 ]] && pip_install "${PYTHON_PACKAGES[@]}"
 }
 
@@ -174,7 +171,7 @@ function provisioning_print_end() {
 
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-    local gdown_path="/opt/micromamba/envs/comfyui/bin/gdown"
+    local gdown_path="/opt/environments/python/comfyui/bin/gdown"
     local url="$1"
     local dest_dir="$2"
     local file_id=""
