@@ -199,7 +199,7 @@ function provisioning_download() {
             ["1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc"]="ip-adapter-plus_sd15.safetensors"
             ["1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"]="controlnet11Models_scribble.safetensors"
             ["1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"]="controlnet11Models_scribble.yaml"
-            ["1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"]="controlnet11Models_depht.safetensors"
+            ["1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"]="controlnet11Models_depth.safetensors"
             ["1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"]="controlnet11Models_depht.yaml"
         )
 
