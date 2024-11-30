@@ -30,11 +30,11 @@ NODES=(
     "https://github.com/projetosTherion/TherionEssentials"
     "https://github.com/projetosTherion/TherionInspire"
 )
-
+   
 CHECKPOINT_MODELS=(
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"
-    "https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #novo
+    "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr" #Arcseed_V0.2.safetensors
+    "https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #Arcseed_1.5.V0.3.safetensors
 )
 
 LORA_MODELS=(
@@ -47,29 +47,32 @@ VAE_MODELS=(
 
 ESRGAN_MODELS=(
     #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
-    "https://drive.google.com/uc?id=1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"
+    "https://drive.google.com/uc?id=1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo" #swift_srgan_2x.pth
+)
+       
+CONTROLNET_MODELS=(
+    "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6" #ttplanetSDXLControlnet_v20Fp16.safetensors
+    "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B" #LoraModelDepth.safetensors
+    "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL" #control-lora-canny-rank256.safetensors
+    #novos
+    "https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ" #controlnet11Models_scribble.safetensors
+    "https://drive.google.com/uc?id=1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ" #controlnet11Models_scribble.yaml
+    "https://drive.google.com/uc?id=1_rewirKccBw5b1OAT4mhd43AeFxtfdBa" #controlnet11Models_depht.yaml
+    "https://drive.google.com/uc?id=1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l" #controlnet11Models_depth.safetensors
+    "https://drive.google.com/uc?id=121idUQS79HKNlQKrk4hePTIYVLonP1P2" #LoraModelScribble.safetensors
+    "https://drive.google.com/uc?id=10bhZNOIacCxsqX4kk4gz-1kvKRth77yo" #extra_details.safetensors
+    
 )
 
-CONTROLNET_MODELS=(
-    "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"
-    "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
-    "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"
-    #novos
-    "https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"
-    "https://drive.google.com/uc?id=1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"
-    "https://drive.google.com/uc?id=1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"
-    "https://drive.google.com/uc?id=1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"
-    "https://drive.google.com/uc?id=121idUQS79HKNlQKrk4hePTIYVLonP1P2"
-)
 
 CLIPVISION_MODELS=(
-    "https://drive.google.com/uc?id=1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"
+    "https://drive.google.com/uc?id=1-Lkm7VX783d_jikdYu2wyK-huy0jR90j" #clipvis_ViT-H_1.5_.safetensors
 )
 
 IPADAPTER_MODELS=(
     #"https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
-    "https://drive.google.com/uc?id=1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq" #novo
-    "https://drive.google.com/uc?id=1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc" #novo
+    "https://drive.google.com/uc?id=1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq" #ip-adapter-plus_sdxl_vit-h.bin
+    "https://drive.google.com/uc?id=1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc" #ip-adapter-plus_sd15.safetensors
     
 )
 
@@ -201,6 +204,11 @@ function provisioning_download() {
             ["1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"]="controlnet11Models_scribble.yaml"
             ["1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"]="controlnet11Models_depth.safetensors"
             ["1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"]="controlnet11Models_depht.yaml"
+            ["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="control-lora-canny-rank256.safetensors"
+            ["10bhZNOIacCxsqX4kk4gz-1kvKRth77yo"]="extra_details.safetensors"
+            ["121idUQS79HKNlQKrk4hePTIYVLonP1P2"]="LoraModelScribble.safetensors"
+
+
         )
 
         file_name="${file_map[$file_id]}"
