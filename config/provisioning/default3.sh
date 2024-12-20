@@ -230,23 +230,23 @@ function provisioning_download() {
 }
 
 
-# Baixar e configurar o script monitor_comfyui.sh
-function download_monitor_script() {
-    local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui3.sh"
-    local destination="/workspace/monitor_comfyui3.sh"
+# # Baixar e configurar o script monitor_comfyui.sh
+# function download_monitor_script() {
+#     local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui3.sh"
+#     local destination="/workspace/monitor_comfyui3.sh"
     
-    echo "Baixando o script monitor_comfyui3.sh..."
-    if wget -O "$destination" "$url"; then
-        echo "Script baixado com sucesso."
-        chmod +x "$destination"
-        "$destination" & # Executa o script em segundo plano
-    else
-        echo "Erro ao baixar o script monitor_comfyui3.sh."
-        exit 1
-    fi
-}
+#     echo "Baixando o script monitor_comfyui3.sh..."
+#     if wget -O "$destination" "$url"; then
+#         echo "Script baixado com sucesso."
+#         chmod +x "$destination"
+#         "$destination" & # Executa o script em segundo plano
+#     else
+#         echo "Erro ao baixar o script monitor_comfyui3.sh."
+#         exit 1
+#     fi
+# }
 
-provisioning_start
+ provisioning_start
 
-# Chame a função para baixar e executar o monitor
-download_monitor_script
+# # Chame a função para baixar e executar o monitor
+# download_monitor_script
