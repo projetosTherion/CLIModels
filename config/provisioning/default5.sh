@@ -29,7 +29,7 @@ NODES=(
     "https://github.com/projetosTherion/TherionSaveImageReal"
     "https://github.com/projetosTherion/TherionEssentials"
     "https://github.com/projetosTherion/TherionInspire"
-    "https://github.com/ltdrdata/ComfyUI-Impact-Pack"
+    "https://github.com/projetosTherion/ComfyUI-Impact-Pack"
 )
    
 CHECKPOINT_MODELS=(
