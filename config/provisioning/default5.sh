@@ -20,7 +20,7 @@ PYTHON_PACKAGES=(
 )
 
 NODES=(
-    "https://github.com/projetosTherion/TherionManager"
+    "https://github.com/projetosTherion/ComfyUI-Manager"
     "https://github.com/projetosTherion/TherionEasy"
     "https://github.com/projetosTherion/TherionControl"
     "https://github.com/projetosTherion/TherionMariGold"
