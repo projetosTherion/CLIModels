@@ -37,7 +37,7 @@ NODES=(
 CHECKPOINT_MODELS=(
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr" #Arcseed_V0.2.safetensors
-    "https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #Arcseed_1.5.V0.3.safetensors
+    #"https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #Arcseed_1.5.V0.3.safetensors
 )
 
 LORA_MODELS=(
@@ -58,12 +58,12 @@ CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B" #LoraModelDepth.safetensors
     "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL" #control-lora-canny-rank256.safetensors
     #novos
-    "https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ" #controlnet11Models_scribble.safetensors
-    "https://drive.google.com/uc?id=1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ" #controlnet11Models_scribble.yaml
-    "https://drive.google.com/uc?id=1_rewirKccBw5b1OAT4mhd43AeFxtfdBa" #controlnet11Models_depht.yaml
-    "https://drive.google.com/uc?id=1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l" #controlnet11Models_depth.safetensors
-    "https://drive.google.com/uc?id=121idUQS79HKNlQKrk4hePTIYVLonP1P2" #LoraModelScribble.safetensors
-    "https://drive.google.com/uc?id=10bhZNOIacCxsqX4kk4gz-1kvKRth77yo" #extra_details.safetensors
+    #"https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ" #controlnet11Models_scribble.safetensors
+    #"https://drive.google.com/uc?id=1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ" #controlnet11Models_scribble.yaml
+    #"https://drive.google.com/uc?id=1_rewirKccBw5b1OAT4mhd43AeFxtfdBa" #controlnet11Models_depht.yaml
+    #"https://drive.google.com/uc?id=1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l" #controlnet11Models_depth.safetensors
+    #"https://drive.google.com/uc?id=121idUQS79HKNlQKrk4hePTIYVLonP1P2" #LoraModelScribble.safetensors
+    #"https://drive.google.com/uc?id=10bhZNOIacCxsqX4kk4gz-1kvKRth77yo" #extra_details.safetensors
     
 )
 
@@ -75,7 +75,7 @@ CLIPVISION_MODELS=(
 IPADAPTER_MODELS=(
     #"https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
     "https://drive.google.com/uc?id=1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq" #ip-adapter-plus_sdxl_vit-h.bin
-    "https://drive.google.com/uc?id=1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc" #ip-adapter-plus_sd15.safetensors
+    #"https://drive.google.com/uc?id=1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc" #ip-adapter-plus_sd15.safetensors
     
 )
 
