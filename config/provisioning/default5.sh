@@ -31,6 +31,7 @@ NODES=(
     "https://github.com/projetosTherion/TherionInspire"
     "https://github.com/projetosTherion/ComfyUI-Impact-Pack"
     "https://github.com/projetosTherion/ComfyUI-Logic"
+    "https://github.com/projetosTherion/comfyui-saveimage-plus"
 )
    
 CHECKPOINT_MODELS=(
