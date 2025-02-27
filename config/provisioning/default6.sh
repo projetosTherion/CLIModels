@@ -54,7 +54,7 @@ ESRGAN_MODELS=(
 )
        
 CONTROLNET_MODELS=(
-    "https://drive.google.com/uc?id=1yA_olbKfQov6tfZbNyCSSajIHJBojyvU" #CN_scribble_XL.safetensors
+    "https://drive.google.com/uc?id=1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU" #CN_scribble_XL.safetensors
     "https://drive.google.com/uc?id=12Zu9ynrizOJ_obwSFRWx7ogswqM4Eynm" #ttplanetSDXLControlnet_v20Fp16.safetensors
     "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B" #LoraModelDepth.safetensors
     "https://drive.google.com/uc?id=1-HBx8mP5SqQszRWX3FIQddknXbuFUMjs" #control-lora-canny-rank256.safetensors
@@ -211,7 +211,7 @@ function provisioning_download() {
             #["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="control-lora-canny-rank256.safetensors"
             #["10bhZNOIacCxsqX4kk4gz-1kvKRth77yo"]="extra_details.safetensors"
             ["1yA_olbKfQov6tfZbNyCSSajIHJBojyvU"]="LoraModelScribble.safetensors"
-            ["1yA_olbKfQov6tfZbNyCSSajIHJBojyvU"]="CN_scribble_XL.safetensors"
+            ["1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU"]="CN_scribble_XL.safetensors"
 
         )
 
