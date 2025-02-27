@@ -23,7 +23,7 @@ NODES=(
     "https://github.com/projetosTherion/TherionManager"
     "https://github.com/projetosTherion/TherionEasy"
     "https://github.com/projetosTherion/TherionControl"
-    "https://github.com/projetosTherion/prs-eth-marigold-depth-lcm-v1-0"
+    "https://github.com/projetosTherion/TherionMariGold"
     "https://github.com/projetosTherion/TherionIPAdapter"
     "https://github.com/projetosTherion/TherionSDUpscale"
     "https://github.com/projetosTherion/TherionSaveImageReal"
