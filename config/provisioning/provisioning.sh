@@ -25,16 +25,16 @@ PYTHON_PACKAGES=(
 NODES=(
     "https://github.com/ltdrdata/ComfyUI-Manager"
     "https://github.com/cubiq/ComfyUI_essentials"
-	"https://github.com/yolain/ComfyUI-Easy-Use"
-	"https://github.com/ltdrdata/ComfyUI-Impact-Pack"
-	"https://github.com/projetosTherion/TherionInspire"
-	"https://github.com/Fannovel16/comfyui_controlnet_aux"
-	"https://github.com/ssitu/ComfyUI_UltimateSDUpscale"
-	"https://github.com/cubiq/ComfyUI_IPAdapter_plus"
-	"https://github.com/theUpsider/ComfyUI-Logic"
-	"https://github.com/cubiq/ComfyUI_essentials"
-	"https://github.com/kijai/ComfyUI-Marigold"
-	"https://github.com/Goktug/comfyui-saveimage-plus"
+    "https://github.com/yolain/ComfyUI-Easy-Use"
+    "https://github.com/ltdrdata/ComfyUI-Impact-Pack"
+    "https://github.com/projetosTherion/TherionInspire"
+    "https://github.com/Fannovel16/comfyui_controlnet_aux"
+    "https://github.com/ssitu/ComfyUI_UltimateSDUpscale"
+    "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
+    "https://github.com/theUpsider/ComfyUI-Logic"
+    "https://github.com/cubiq/ComfyUI_essentials"
+    "https://github.com/kijai/ComfyUI-Marigold"
+    "https://github.com/Goktug/comfyui-saveimage-plus"
 )
    
 CHECKPOINT_MODELS=(
