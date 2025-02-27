@@ -26,7 +26,7 @@ NODES=(
     "https://github.com/projetosTherion/TherionEasy"
     "https://github.com/projetosTherion/TherionControl"
     #"https://github.com/projetosTherion/TherionMariGold"
-    "https://github.com/kijai/ComfyUI-Marigold"
+    "https://github.com/arcseedai/TherionMariGold/tree/patch-1"
     "https://github.com/projetosTherion/TherionIPAdapter"
     "https://github.com/projetosTherion/TherionSDUpscale"
     "https://github.com/projetosTherion/TherionSaveImageReal"
