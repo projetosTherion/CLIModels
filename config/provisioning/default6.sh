@@ -13,9 +13,9 @@ PIP_PACKAGES=(
 )
 
 PYTHON_PACKAGES=(
-    "diffusers==0.28.0"
+   # "diffusers==0.28.0"
     #"transformers==4.32.0"
-    "huggingface_hub==0.20.2"
+    #"huggingface_hub==0.20.2"
     # "opencv-python==4.7.0.72"
 )
 
