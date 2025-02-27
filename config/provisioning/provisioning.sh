@@ -17,6 +17,8 @@ PYTHON_PACKAGES=(
     #"transformers==4.32.0"
     "huggingface_hub"
     # "opencv-python==4.7.0.72"
+    "matplotlib"
+    
 )
 
 NODES=(
