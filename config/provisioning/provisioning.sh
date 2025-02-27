@@ -2,9 +2,6 @@
 
 # Este arquivo será chamado em init.sh
 
-source /venv/main/bin/activate
-COMFYUI_DIR=${WORKSPACE}/ComfyUI
-
 APT_PACKAGES=(
     #"package-1"
     #"package-2"
@@ -16,58 +13,72 @@ PIP_PACKAGES=(
 )
 
 PYTHON_PACKAGES=(
-   # "diffusers==0.28.0"
+    "diffusers==0.28.0"
     #"transformers==4.32.0"
-    #"huggingface_hub==0.20.2"
+    "huggingface_hub"
     # "opencv-python==4.7.0.72"
 )
 
 NODES=(
-    "https://github.com/ltdrdata/ComfyUI-Manager"
-    "https://github.com/cubiq/ComfyUI_essentials"
-    "https://github.com/yolain/ComfyUI-Easy-Use"
-    "https://github.com/ltdrdata/ComfyUI-Impact-Pack"
+    "https://github.com/projetosTherion/TherionManager"
+    "https://github.com/projetosTherion/TherionEasy"
+    "https://github.com/projetosTherion/TherionControl"
+    "https://github.com/projetosTherion/TherionMariGold"
+    "https://github.com/projetosTherion/TherionIPAdapter"
+    "https://github.com/projetosTherion/TherionSDUpscale"
+    "https://github.com/projetosTherion/TherionSaveImageReal"
+    "https://github.com/projetosTherion/TherionEssentials"
     "https://github.com/projetosTherion/TherionInspire"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
-    "https://github.com/ssitu/ComfyUI_UltimateSDUpscale"
-    "https://github.com/cubiq/ComfyUI_IPAdapter_plus"
-    "https://github.com/theUpsider/ComfyUI-Logic"
-    "https://github.com/cubiq/ComfyUI_essentials"
-    "https://github.com/kijai/ComfyUI-Marigold"
-    "https://github.com/Goktug/comfyui-saveimage-plus"
+    "https://github.com/projetosTherion/ComfyUI-Impact-Pack"
+    "https://github.com/projetosTherion/ComfyUI-Logic"
+    "https://github.com/projetosTherion/comfyui-saveimage-plus"
 )
-   
+
+
+        
 CHECKPOINT_MODELS=(
-    # "https://drive.google.com/uc?id=1m8sBGXK6ojlI1FS_14d-1Jg17JLdW3p8" #Arcseed_V0.2.safetensors Comentado
+    #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
+    "https://drive.google.com/uc?id=1PgfTfGlqU_zed_VdXoylKV_Fnx4xkl9b" #Arcseed_V0.2.safetensors
+    #"https://drive.google.com/uc?id=1zwWi3VyAX59xmBKROdiPBykcEqi_4Q4r" #Arcseed_1.5.V0.3.safetensors
 )
 
 LORA_MODELS=(
+    #"https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"
 )
 
 VAE_MODELS=(
+    #"https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
 )
 
 ESRGAN_MODELS=(
-    # "https://drive.google.com/uc?id=1OHzoEeXWwP89wqruznHHkRodpBlQZ_ho" #swift_srgan_2x.pth Comentado
+    #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
+    "https://drive.google.com/uc?id=1MjkXyL861JqfgvRJw6hcmTYf8EgqXK4C" #swift_srgan_2x.pth
 )
-       
+
 CONTROLNET_MODELS=(
-    # "https://drive.google.com/uc?id=1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU" #CN_scribble_XL.safetensors Comentado
-    # "https://drive.google.com/uc?id=1VJzQWI1fisR4BBv4YUT4tiBURDGS-m7G" #ttplanetSDXLControlnet_v20Fp16.safetensors Comentado
-    # "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B" #LoraModelDepth.safetensors Comentado
-    # "https://drive.google.com/uc?id=1-HBx8mP5SqQszRWX3FIQddknXbuFUMjs" #control-lora-canny-rank256.safetensors Comentado
+    "https://drive.google.com/uc?id=1nPYHH9c0uFhx4x0L3E9KPEwMCqTfq0Dz" #ttplanetSDXLControlnet_v20Fp16.safetensors
+    "https://drive.google.com/uc?id=1mM8jf_BTZ04uuW_7RxLtFl0_LO79Jrf1" #LoraModelDepth.safetensors
+    #"https://drive.google.com/uc?id=1zSaUPooORUfV6BMTmC0etS7aJfzx-ycQ" #control-lora-canny-rank256.safetensors
     #novos
-    # "https://drive.google.com/uc?id=1yA_olbKfQov6tfZbNyCSSajIHJBojyvU" #LoraModelScribble.safetensors Comentado
+    "https://drive.google.com/uc?id=12NBsbX0wBeZ5tvSyErJyD6tRl9A-Wju4" #controlnet11Models_scribble.safetensors
+    #"https://drive.google.com/uc?id=1Jen7mv1xnSdi3TKD1Q_gI6w3c6LHMA7W" #controlnet11Models_scribble.yaml
+    #"https://drive.google.com/uc?id=17xFkFBbYFVn03rRawEN1DU3P1971FWCe" #controlnet11Models_depht.yaml
+    #"https://drive.google.com/uc?id=19z5qYZR714nrwbQZsIGjFMgsJkE8IxU7" #controlnet11Models_depth.safetensors
+    #"https://drive.google.com/uc?id=1njInc6dTpTP7qlP-ijZzQ1S4ibFondIe" #LoraModelScribble.safetensors
+    #"https://drive.google.com/uc?id=1uLZEmV9kCtpVyobRDRxEXwnDjp2burqc" #extra_details.safetensors
+    "https://drive.google.com/uc?id=1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU" #CN_scribble_XL.safetensors Comentado
     
 )
 
 
 CLIPVISION_MODELS=(
-    # "https://drive.google.com/uc?id=1jfirETLNX7IRMZ8hxE3AKGOibtAQzSRh" #clipvis_ViT-H_1.5_.safetensors Comentado
+    "https://drive.google.com/uc?id=1RGUNbPKhs0BNQ4wkRQYmES9e45rni2ba" #clipvis_ViT-H_1.5_.safetensors
 )
 
 IPADAPTER_MODELS=(
-    # "https://drive.google.com/uc?id=19bVauEk28zBO6ySxrnzm4jkQTVQ1YT60" #ip-adapter-plus_sdxl_vit-h.bin Comentado 
+    #"https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
+    "https://drive.google.com/uc?id=1Rzo3UxYd0Ksl2LwKKJpDfmNRa0Fp1Jj3" #ip-adapter-plus_sdxl_vit-h.bin
+    "https://drive.google.com/uc?id=1rH2mLAKPZY-BPo5_UoT7y-_l7XUdr2yp" #ip-adapter-plus_sd15.safetensors
     
 )
 
@@ -187,15 +198,23 @@ function provisioning_download() {
 
         # Mapeando o nome do arquivo pelo ID (opcional)
         declare -A file_map=(
-            # ["1VJzQWI1fisR4BBv4YUT4tiBURDGS-m7G"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
-            # ["1m8sBGXK6ojlI1FS_14d-1Jg17JLdW3p8"]="Arcseed_V0.2.safetensors"
-            # ["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
-            # ["1OHzoEeXWwP89wqruznHHkRodpBlQZ_ho"]="swift_srgan_2x.pth"
-            # ["1jfirETLNX7IRMZ8hxE3AKGOibtAQzSRh"]="clipvis_ViT-H_1.5_.safetensors"
-            # ["19bVauEk28zBO6ySxrnzm4jkQTVQ1YT60"]="ip-adapter-plus_sdxl_vit-h.bin"
-            # ["1yA_olbKfQov6tfZbNyCSSajIHJBojyvU"]="LoraModelScribble.safetensors"
-            # ["1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU"]="CN_scribble_XL.safetensors"
-
+            ["1nPYHH9c0uFhx4x0L3E9KPEwMCqTfq0Dz"]="ttplanetSDXLControlnet_v20Fp16.safetensors" 
+            ["1PgfTfGlqU_zed_VdXoylKV_Fnx4xkl9b"]="Arcseed_V0.2.safetensors" 
+            ["1mM8jf_BTZ04uuW_7RxLtFl0_LO79Jrf1"]="LoraModelDepth.safetensors" 
+            ["1MjkXyL861JqfgvRJw6hcmTYf8EgqXK4C"]="swift_srgan_2x.pth" 
+            ["1RGUNbPKhs0BNQ4wkRQYmES9e45rni2ba"]="clipvis_ViT-H_1.5_.safetensors" 
+            ["1zwWi3VyAX59xmBKROdiPBykcEqi_4Q4r"]="Arcseed_1.5.V0.3.safetensors" 
+            ["1Rzo3UxYd0Ksl2LwKKJpDfmNRa0Fp1Jj3"]="ip-adapter-plus_sdxl_vit-h.bin" 
+            ["1rH2mLAKPZY-BPo5_UoT7y-_l7XUdr2yp"]="ip-adapter-plus_sd15.safetensors" 
+            #["12NBsbX0wBeZ5tvSyErJyD6tRl9A-Wju4"]="controlnet11Models_scribble.safetensors" 
+            #["1Jen7mv1xnSdi3TKD1Q_gI6w3c6LHMA7W"]="controlnet11Models_scribble.yaml" 
+            #["19z5qYZR714nrwbQZsIGjFMgsJkE8IxU7"]="controlnet11Models_depth.safetensors" 
+            #["17xFkFBbYFVn03rRawEN1DU3P1971FWCe"]="controlnet11Models_depht.yaml" 
+            #["1zSaUPooORUfV6BMTmC0etS7aJfzx-ycQ"]="control-lora-canny-rank256.safetensors" 
+            #["1uLZEmV9kCtpVyobRDRxEXwnDjp2burqc"]="extra_details.safetensors" 
+            #["1njInc6dTpTP7qlP-ijZzQ1S4ibFondIe"]="LoraModelScribble.safetensors" 
+            ["1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU"]="CN_scribble_XL.safetensors"
+            
         )
 
         file_name="${file_map[$file_id]}"
@@ -219,21 +238,21 @@ function provisioning_download() {
 
 # # Baixar e configurar o script monitor_comfyui.sh
 # function download_monitor_script() {
-#     local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui2.sh"
-#     local destination="/workspace/monitor_comfyui2.sh"
+#     local url="https://raw.githubusercontent.com/projetosTherion/CLIModels/main/config/provisioning/monitor_comfyui3.sh"
+#     local destination="/workspace/monitor_comfyui3.sh"
     
-#     echo "Baixando o script monitor_comfyui2.sh..."
+#     echo "Baixando o script monitor_comfyui3.sh..."
 #     if wget -O "$destination" "$url"; then
 #         echo "Script baixado com sucesso."
 #         chmod +x "$destination"
 #         "$destination" & # Executa o script em segundo plano
 #     else
-#         echo "Erro ao baixar o script monitor_comfyui2.sh."
+#         echo "Erro ao baixar o script monitor_comfyui3.sh."
 #         exit 1
 #     fi
 # }
 
-provisioning_start
+ provisioning_start
 
-# Chame a função para baixar e executar o monitor
+# # Chame a função para baixar e executar o monitor
 # download_monitor_script
