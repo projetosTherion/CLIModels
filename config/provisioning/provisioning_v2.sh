@@ -41,8 +41,8 @@ NODES=(
         
 CHECKPOINT_MODELS=(
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    "https://drive.google.com/uc?id=1PgfTfGlqU_zed_VdXoylKV_Fnx4xkl9b" #Arcseed_V0.2.safetensors
-    #"https://drive.google.com/uc?id=1zwWi3VyAX59xmBKROdiPBykcEqi_4Q4r" #Arcseed_1.5.V0.3.safetensors
+    "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr" #Arcseed_V0.2.safetensors
+    #"https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #Arcseed_1.5.V0.3.safetensors
 )
 
 LORA_MODELS=(
@@ -55,33 +55,33 @@ VAE_MODELS=(
 
 ESRGAN_MODELS=(
     #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
-    "https://drive.google.com/uc?id=1MjkXyL861JqfgvRJw6hcmTYf8EgqXK4C" #swift_srgan_2x.pth
+    "https://drive.google.com/uc?id=1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo" #swift_srgan_2x.pth
 )
-
+       
 CONTROLNET_MODELS=(
-    "https://drive.google.com/uc?id=1nPYHH9c0uFhx4x0L3E9KPEwMCqTfq0Dz" #ttplanetSDXLControlnet_v20Fp16.safetensors
-    "https://drive.google.com/uc?id=1mM8jf_BTZ04uuW_7RxLtFl0_LO79Jrf1" #LoraModelDepth.safetensors
-    #"https://drive.google.com/uc?id=1zSaUPooORUfV6BMTmC0etS7aJfzx-ycQ" #control-lora-canny-rank256.safetensors
+    "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6" #ttplanetSDXLControlnet_v20Fp16.safetensors
+    "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B" #LoraModelDepth.safetensors
+    "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL" #control-lora-canny-rank256.safetensors
     #novos
-    "https://drive.google.com/uc?id=12NBsbX0wBeZ5tvSyErJyD6tRl9A-Wju4" #controlnet11Models_scribble.safetensors
-    #"https://drive.google.com/uc?id=1Jen7mv1xnSdi3TKD1Q_gI6w3c6LHMA7W" #controlnet11Models_scribble.yaml
-    #"https://drive.google.com/uc?id=17xFkFBbYFVn03rRawEN1DU3P1971FWCe" #controlnet11Models_depht.yaml
-    #"https://drive.google.com/uc?id=19z5qYZR714nrwbQZsIGjFMgsJkE8IxU7" #controlnet11Models_depth.safetensors
-    #"https://drive.google.com/uc?id=1njInc6dTpTP7qlP-ijZzQ1S4ibFondIe" #LoraModelScribble.safetensors
-    #"https://drive.google.com/uc?id=1uLZEmV9kCtpVyobRDRxEXwnDjp2burqc" #extra_details.safetensors
-    "https://drive.google.com/uc?id=1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU" #CN_scribble_XL.safetensors Comentado
+    #"https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ" #controlnet11Models_scribble.safetensors
+    #"https://drive.google.com/uc?id=1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ" #controlnet11Models_scribble.yaml
+    #"https://drive.google.com/uc?id=1_rewirKccBw5b1OAT4mhd43AeFxtfdBa" #controlnet11Models_depht.yaml
+    "https://drive.google.com/uc?id=1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l" #controlnet11Models_depth.safetensors
+    #"https://drive.google.com/uc?id=121idUQS79HKNlQKrk4hePTIYVLonP1P2" #LoraModelScribble.safetensors
+    "https://drive.google.com/uc?id=1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU" #CN_scribble_XL.safetensors
+    #"https://drive.google.com/uc?id=10bhZNOIacCxsqX4kk4gz-1kvKRth77yo" #extra_details.safetensors
     
 )
 
 
 CLIPVISION_MODELS=(
-    "https://drive.google.com/uc?id=1RGUNbPKhs0BNQ4wkRQYmES9e45rni2ba" #clipvis_ViT-H_1.5_.safetensors
+    "https://drive.google.com/uc?id=1-Lkm7VX783d_jikdYu2wyK-huy0jR90j" #clipvis_ViT-H_1.5_.safetensors
 )
 
 IPADAPTER_MODELS=(
     #"https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
-    "https://drive.google.com/uc?id=1Rzo3UxYd0Ksl2LwKKJpDfmNRa0Fp1Jj3" #ip-adapter-plus_sdxl_vit-h.bin
-    "https://drive.google.com/uc?id=1rH2mLAKPZY-BPo5_UoT7y-_l7XUdr2yp" #ip-adapter-plus_sd15.safetensors
+    "https://drive.google.com/uc?id=1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq" #ip-adapter-plus_sdxl_vit-h.bin
+    "https://drive.google.com/uc?id=1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc" #ip-adapter-plus_sd15.safetensors
     
 )
 
@@ -201,21 +201,20 @@ function provisioning_download() {
 
         # Mapeando o nome do arquivo pelo ID (opcional)
         declare -A file_map=(
-            ["1nPYHH9c0uFhx4x0L3E9KPEwMCqTfq0Dz"]="ttplanetSDXLControlnet_v20Fp16.safetensors" 
-            ["1PgfTfGlqU_zed_VdXoylKV_Fnx4xkl9b"]="Arcseed_V0.2.safetensors" 
-            ["1mM8jf_BTZ04uuW_7RxLtFl0_LO79Jrf1"]="LoraModelDepth.safetensors" 
-            ["1MjkXyL861JqfgvRJw6hcmTYf8EgqXK4C"]="swift_srgan_2x.pth" 
-            ["1RGUNbPKhs0BNQ4wkRQYmES9e45rni2ba"]="clipvis_ViT-H_1.5_.safetensors" 
-            ["1zwWi3VyAX59xmBKROdiPBykcEqi_4Q4r"]="Arcseed_1.5.V0.3.safetensors" 
-            ["1Rzo3UxYd0Ksl2LwKKJpDfmNRa0Fp1Jj3"]="ip-adapter-plus_sdxl_vit-h.bin" 
-            ["1rH2mLAKPZY-BPo5_UoT7y-_l7XUdr2yp"]="ip-adapter-plus_sd15.safetensors" 
-            #["12NBsbX0wBeZ5tvSyErJyD6tRl9A-Wju4"]="controlnet11Models_scribble.safetensors" 
-            #["1Jen7mv1xnSdi3TKD1Q_gI6w3c6LHMA7W"]="controlnet11Models_scribble.yaml" 
-            #["19z5qYZR714nrwbQZsIGjFMgsJkE8IxU7"]="controlnet11Models_depth.safetensors" 
-            #["17xFkFBbYFVn03rRawEN1DU3P1971FWCe"]="controlnet11Models_depht.yaml" 
-            #["1zSaUPooORUfV6BMTmC0etS7aJfzx-ycQ"]="control-lora-canny-rank256.safetensors" 
-            #["1uLZEmV9kCtpVyobRDRxEXwnDjp2burqc"]="extra_details.safetensors" 
-            #["1njInc6dTpTP7qlP-ijZzQ1S4ibFondIe"]="LoraModelScribble.safetensors" 
+            ["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
+            ["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
+            ["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
+            ["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
+            ["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
+            ["1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq"]="Arcseed_1.5.V0.3.safetensors"
+            ["1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq"]="ip-adapter-plus_sdxl_vit-h.bin"
+            ["1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc"]="ip-adapter-plus_sd15.safetensors"
+            ["1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"]="controlnet11Models_scribble.safetensors"
+            ["1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"]="controlnet11Models_scribble.yaml"
+            ["1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"]="controlnet11Models_depth.safetensors"
+            ["1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"]="controlnet11Models_depht.yaml"
+            ["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="control-lora-canny-rank256.safetensors"
+            ["10bhZNOIacCxsqX4kk4gz-1kvKRth77yo"]="extra_details.safetensors"
             ["1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU"]="CN_scribble_XL.safetensors"
             
         )
