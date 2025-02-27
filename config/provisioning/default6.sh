@@ -75,7 +75,7 @@ CLIPVISION_MODELS=(
 
 IPADAPTER_MODELS=(
     #"https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
-    "https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS" #ip-adapter-plus_sdxl_vit-h.bin
+    "https://drive.google.com/uc?id=19bVauEk28zBO6ySxrnzm4jkQTVQ1YT60" #ip-adapter-plus_sdxl_vit-h.bin
     #"https://drive.google.com/uc?id=1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc" #ip-adapter-plus_sd15.safetensors
     
 )
@@ -202,7 +202,7 @@ function provisioning_download() {
             ["1OHzoEeXWwP89wqruznHHkRodpBlQZ_ho"]="swift_srgan_2x.pth"
             ["1jfirETLNX7IRMZ8hxE3AKGOibtAQzSRh"]="clipvis_ViT-H_1.5_.safetensors"
             #["1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq"]="Arcseed_1.5.V0.3.safetensors"
-            ["1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"]="ip-adapter-plus_sdxl_vit-h.bin"
+            ["19bVauEk28zBO6ySxrnzm4jkQTVQ1YT60"]="ip-adapter-plus_sdxl_vit-h.bin"
             #["1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc"]="ip-adapter-plus_sd15.safetensors"
             #["1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"]="controlnet11Models_scribble.safetensors"
             #["1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"]="controlnet11Models_scribble.yaml"
