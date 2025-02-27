@@ -55,7 +55,7 @@ ESRGAN_MODELS=(
        
 CONTROLNET_MODELS=(
     "https://drive.google.com/uc?id=1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU" #CN_scribble_XL.safetensors
-    "https://drive.google.com/uc?id=12Zu9ynrizOJ_obwSFRWx7ogswqM4Eynm" #ttplanetSDXLControlnet_v20Fp16.safetensors
+    "https://drive.google.com/uc?id=1VJzQWI1fisR4BBv4YUT4tiBURDGS-m7G" #ttplanetSDXLControlnet_v20Fp16.safetensors
     "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B" #LoraModelDepth.safetensors
     "https://drive.google.com/uc?id=1-HBx8mP5SqQszRWX3FIQddknXbuFUMjs" #control-lora-canny-rank256.safetensors
     #novos
@@ -196,7 +196,7 @@ function provisioning_download() {
 
         # Mapeando o nome do arquivo pelo ID (opcional)
         declare -A file_map=(
-            ["12Zu9ynrizOJ_obwSFRWx7ogswqM4Eynm"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
+            ["1VJzQWI1fisR4BBv4YUT4tiBURDGS-m7G"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
             ["1m8sBGXK6ojlI1FS_14d-1Jg17JLdW3p8"]="Arcseed_V0.2.safetensors"
             ["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
             ["1OHzoEeXWwP89wqruznHHkRodpBlQZ_ho"]="swift_srgan_2x.pth"
