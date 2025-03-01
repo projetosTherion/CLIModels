@@ -67,7 +67,7 @@ CONTROLNET_MODELS=(
     #"https://drive.google.com/uc?id=1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ" #controlnet11Models_scribble.yaml
     #"https://drive.google.com/uc?id=1_rewirKccBw5b1OAT4mhd43AeFxtfdBa" #controlnet11Models_depht.yaml
     "https://drive.google.com/uc?id=1rv2apkdrWcmbuZ1MfLlSktr0e4etHnE5" #controlnet11Models_depth.safetensors
-    #"https://drive.google.com/uc?id=121idUQS79HKNlQKrk4hePTIYVLonP1P2" #LoraModelScribble.safetensors
+    "https://drive.google.com/uc?id=121idUQS79HKNlQKrk4hePTIYVLonP1P2" #LoraModelScribble.safetensors
     "https://drive.google.com/uc?id=1524_jKD0qglmkREUD043Yz3ha0cATn-d" #CN_scribble_XL.safetensors
     #"https://drive.google.com/uc?id=10bhZNOIacCxsqX4kk4gz-1kvKRth77yo" #extra_details.safetensors
     
