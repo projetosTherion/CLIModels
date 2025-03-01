@@ -187,13 +187,14 @@ function provisioning_download() {
 
         # Mapeando o nome do arquivo pelo ID (opcional)
         declare -A file_map=(
-            ["1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
-            ["1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr"]="Arcseed_V0.2.safetensors"
-            ["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
-            ["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
-            ["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
-            ["1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq"]="ip-adapter-plus_sdxl_vit-h.bin"
-            ["1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU"]="CN_scribble_XL.safetensors"
+            ["1kvg_nLSVaeyHns8tWNzbHp4k0b_6_eIW"]="Arcseed_V0.2.safetensors"
+            ["1N1owUbmgwS1s2geH8HGmjZ1QQxHFVj2E"]="swift_srgan_2x.pth"
+            ["1VJzQWI1fisR4BBv4YUT4tiBURDGS-m7G"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
+            ["17mnDfd6sn6kZhPc3O9CUzxHo4JjqZSk4"]="LoraModelDepth.safetensors"
+            ["1cJON8Ivze9I0TNHzz4Lbk1hJAzuTpHmx"]="CN_scribble_XL.safetensors"            
+            ["1KNOUMjnmuvYfm6KxXGQxKtVQDmnSJc6i"]="clipvis_ViT-H_1.5_.safetensors"
+            ["1X4Mf_C-LxSPW-bk0kCR4lmMlBzsN2fh4"]="ip-adapter-plus_sdxl_vit-h.bin"
+            
             
         )
 
