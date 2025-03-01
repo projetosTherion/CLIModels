@@ -178,6 +178,10 @@ function provisioning_download() {
     local file_name=""
     local file_path=""
 
+    # Create custom cache directory for gdown
+    local gdown_cache_dir="/opt/environments/python/comfyui/.cache/gdown"
+    mkdir -p "$gdown_cache_dir"  # Create directory if it doesn't exist
+
     # Verificar se o destino existe; criar se necessário
     [[ ! -d $dest_dir ]] && mkdir -p "$dest_dir"
 
@@ -185,17 +189,15 @@ function provisioning_download() {
         # Extraindo o ID do arquivo do Google Drive
         file_id=$(echo "$url" | grep -oP '(?<=id=)[^&]+' | head -1)
 
-        # Mapeando o nome do arquivo pelo ID (opcional)
+        # Mapeando o nome do arquivo pelo ID
         declare -A file_map=(
             ["1kvg_nLSVaeyHns8tWNzbHp4k0b_6_eIW"]="Arcseed_V0.2.safetensors"
             ["1N1owUbmgwS1s2geH8HGmjZ1QQxHFVj2E"]="swift_srgan_2x.pth"
             ["1VJzQWI1fisR4BBv4YUT4tiBURDGS-m7G"]="ttplanetSDXLControlnet_v20Fp16.safetensors"
             ["17mnDfd6sn6kZhPc3O9CUzxHo4JjqZSk4"]="LoraModelDepth.safetensors"
-            ["1cJON8Ivze9I0TNHzz4Lbk1hJAzuTpHmx"]="CN_scribble_XL.safetensors"            
+            ["1cJON8Ivze9I0TNHzz4Lbk1hJAzuTpHmx"]="CN_scribble_XL.safetensors"
             ["1KNOUMjnmuvYfm6KxXGQxKtVQDmnSJc6i"]="clipvis_ViT-H_1.5_.safetensors"
             ["1X4Mf_C-LxSPW-bk0kCR4lmMlBzsN2fh4"]="ip-adapter-plus_sdxl_vit-h.bin"
-            
-            
         )
 
         file_name="${file_map[$file_id]}"
@@ -204,7 +206,8 @@ function provisioning_download() {
         [[ ! -d $2 ]] && mkdir -p "$2"
 
         echo "Downloading $file_name from Google Drive to $file_path"
-        $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" || echo "Erro ao baixar o arquivo $file_name"
+        # Use --cache-dir to override the default cache location
+        GDOWN_CACHE_DIR="$gdown_cache_dir" $gdown_path "https://drive.google.com/uc?id=$file_id" -O "$file_path" || echo "Erro ao baixar o arquivo $file_name"
     else
         file_name=$(basename "$1")
         file_path="$2/$file_name"
