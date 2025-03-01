@@ -40,9 +40,7 @@ NODES=(
 
         
 CHECKPOINT_MODELS=(
-    #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
-    "https://drive.google.com/uc?id=1nUILIbv4Tqi6L6zqYYnFspKjD1qqdpOr" #Arcseed_V0.2.safetensors
-    #"https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #Arcseed_1.5.V0.3.safetensors
+    "https://drive.google.com/uc?id=1kvg_nLSVaeyHns8tWNzbHp4k0b_6_eIW" #Arcseed_V0.2.safetensors
 )
 
 LORA_MODELS=(
@@ -54,35 +52,23 @@ VAE_MODELS=(
 )
 
 ESRGAN_MODELS=(
-    #"https://drive.google.com/uc?id=1j6s83jYW1c7Yu6Ys4XuhRymxqIyexPOB"
-    "https://drive.google.com/uc?id=1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo" #swift_srgan_2x.pth
+    "https://drive.google.com/uc?id=1N1owUbmgwS1s2geH8HGmjZ1QQxHFVj2E" #swift_srgan_2x.pth
 )
        
 CONTROLNET_MODELS=(
-    "https://drive.google.com/uc?id=1QmgZFXkJoHNDiBVK8EqjmVeunbtDW9m6" #ttplanetSDXLControlnet_v20Fp16.safetensors
-    "https://drive.google.com/uc?id=1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B" #LoraModelDepth.safetensors
-    "https://drive.google.com/uc?id=1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL" #control-lora-canny-rank256.safetensors
+    "https://drive.google.com/uc?id=1VJzQWI1fisR4BBv4YUT4tiBURDGS-m7G" #ttplanetSDXLControlnet_v20Fp16.safetensors
+    "https://drive.google.com/uc?id=17mnDfd6sn6kZhPc3O9CUzxHo4JjqZSk4" #LoraModelDepth.safetensors
     #novos
-    #"https://drive.google.com/uc?id=1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ" #controlnet11Models_scribble.safetensors
-    #"https://drive.google.com/uc?id=1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ" #controlnet11Models_scribble.yaml
-    #"https://drive.google.com/uc?id=1_rewirKccBw5b1OAT4mhd43AeFxtfdBa" #controlnet11Models_depht.yaml
-    "https://drive.google.com/uc?id=1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l" #controlnet11Models_depth.safetensors
-    #"https://drive.google.com/uc?id=121idUQS79HKNlQKrk4hePTIYVLonP1P2" #LoraModelScribble.safetensors
-    "https://drive.google.com/uc?id=1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU" #CN_scribble_XL.safetensors
-    #"https://drive.google.com/uc?id=10bhZNOIacCxsqX4kk4gz-1kvKRth77yo" #extra_details.safetensors
-    
+    "https://drive.google.com/uc?id=1cJON8Ivze9I0TNHzz4Lbk1hJAzuTpHmx" #CN_scribble_XL.safetensors    
 )
 
 
 CLIPVISION_MODELS=(
-    "https://drive.google.com/uc?id=1-Lkm7VX783d_jikdYu2wyK-huy0jR90j" #clipvis_ViT-H_1.5_.safetensors
+    "https://drive.google.com/uc?id=1KNOUMjnmuvYfm6KxXGQxKtVQDmnSJc6i" #clipvis_ViT-H_1.5_.safetensors
 )
 
 IPADAPTER_MODELS=(
-    #"https://drive.google.com/uc?id=1tL6pipwEcKDmmF-LQOd7zysY4jJXQ9CS"
-    "https://drive.google.com/uc?id=1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq" #ip-adapter-plus_sdxl_vit-h.bin
-    "https://drive.google.com/uc?id=1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc" #ip-adapter-plus_sd15.safetensors
-    
+    "https://drive.google.com/uc?id=1X4Mf_C-LxSPW-bk0kCR4lmMlBzsN2fh4" #ip-adapter-plus_sdxl_vit-h.bin    
 )
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
@@ -206,15 +192,7 @@ function provisioning_download() {
             ["1J-fWHtny3MvBMKrTPSiXcv7mG24qQz6B"]="LoraModelDepth.safetensors"
             ["1xHZspe7h_P-KwSbCunMyfGJpKM1a3Ooo"]="swift_srgan_2x.pth"
             ["1-Lkm7VX783d_jikdYu2wyK-huy0jR90j"]="clipvis_ViT-H_1.5_.safetensors"
-            ["1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq"]="Arcseed_1.5.V0.3.safetensors"
             ["1XhbbbEoOKUvXRgN6tDc7SV2aN11dt0kq"]="ip-adapter-plus_sdxl_vit-h.bin"
-            ["1wtgvt0jMyoYCO95evhBjaeBvvZ7uwSzc"]="ip-adapter-plus_sd15.safetensors"
-            ["1x7g9sVIKuEw2wVMF1PiAHVFWCHecaQTJ"]="controlnet11Models_scribble.safetensors"
-            ["1ShX6D-RKcbke9Ykvyoq7NfuBQUaKs9RZ"]="controlnet11Models_scribble.yaml"
-            ["1KuT_cTj7NnbZlSfMKTGuCaoW5m3Yby5l"]="controlnet11Models_depth.safetensors"
-            ["1_rewirKccBw5b1OAT4mhd43AeFxtfdBa"]="controlnet11Models_depht.yaml"
-            ["1oXZrJSVG4aAz9hGZeDMI6ccewc_n_EuL"]="control-lora-canny-rank256.safetensors"
-            ["10bhZNOIacCxsqX4kk4gz-1kvKRth77yo"]="extra_details.safetensors"
             ["1xCepx5_d7K2n87vRoBEhRtrRRDXdSCTU"]="CN_scribble_XL.safetensors"
             
         )
