@@ -45,6 +45,8 @@ CHECKPOINT_MODELS=(
     #"https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
     "https://drive.google.com/uc?id=17b3zHkBKhMMqyYKVgMFZUMNF0ThS4FTJ" #Arcseed_V0.2.safetensors
     #"https://drive.google.com/uc?id=1MmB0X9GZxqoVwf3M3yhYQxvWpjjFgrBq" #Arcseed_1.5.V0.3.safetensors
+    "https://drive.google.com/uc?id=1d5tPsfqCFX950ViGih7S5cOVEM1cod-W" #Arcseed_inpainting_V1.0.safetensors
+
 )
 
 LORA_MODELS=(
@@ -86,9 +88,7 @@ IPADAPTER_MODELS=(
     "https://drive.google.com/uc?id=10BIS_6f5kc32gVL0tAZbao8PSFhAcgqI" #ip-adapter-plus_sd15.safetensors
     
 )
-IPAINT_MODELS=(
-   "https://drive.google.com/uc?id=1d5tPsfqCFX950ViGih7S5cOVEM1cod-W" #ipaint_model.safetensors
-)
+
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
 function provisioning_start() {
@@ -103,7 +103,6 @@ function provisioning_start() {
     provisioning_get_nodes
     provisioning_get_pip_packages
     provisioning_install_python_packages
-    provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ipaint" "${IPAINT_MODELS[@]}"
     provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/ckpt" "${CHECKPOINT_MODELS[@]}"
     provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/lora" "${LORA_MODELS[@]}"
     provisioning_get_models "${WORKSPACE}/storage/stable_diffusion/models/controlnet" "${CONTROLNET_MODELS[@]}"
@@ -216,7 +215,7 @@ function provisioning_download() {
             ["1aRRj23KfY7SI560VB6Z_CQSqCh8wKG6z"]="clipvis_ViT-H_1.5_.safetensors"
             ["1C7HabM6Uxe96WwjPcA7pNpQeFwmtTTdV"]="ip-adapter-plus_sdxl_vit-h.bin"
             ["10BIS_6f5kc32gVL0tAZbao8PSFhAcgqI"]="ip-adapter-plus_sd15.safetensors"
-            ["1d5tPsfqCFX950ViGih7S5cOVEM1cod-W"]="ipaint_model.safetensors"
+            ["1d5tPsfqCFX950ViGih7S5cOVEM1cod-W"]="Arcseed_inpainting_V1.0.safetensors"
         )
 
         file_name="${file_map[$file_id]}"
